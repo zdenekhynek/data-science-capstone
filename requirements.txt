@@ -1,4 +1,9 @@
-Collecting pymongo
-  Using cached pymongo-3.4.0-cp27-cp27m-macosx_10_11_intel.whl
-Installing collected packages: pymongo
-Successfully installed pymongo-3.4.0
+Collecting simplejson
+  Downloading simplejson-3.10.0.tar.gz (77kB)
+Building wheels for collected packages: simplejson
+  Running setup.py bdist_wheel for simplejson: started
+  Running setup.py bdist_wheel for simplejson: finished with status 'done'
+  Stored in directory: /Users/zdenekhynek/Library/Caches/pip/wheels/43/c5/ef/edcebbb19becffd2ba75bf219afdbb4ca85198b2d909f1b31b
+Successfully built simplejson
+Installing collected packages: simplejson
+Successfully installed simplejson-3.10.0
