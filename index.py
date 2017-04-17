@@ -5,7 +5,7 @@ from pymongo import MongoClient
 import time
 
 api_key = os.environ['GUARDIAN_API_KEY']
-query = 'terrorist'
+q = 'terrorist'
 
 client = MongoClient()
 db = client['capstone']
@@ -18,7 +18,7 @@ def insert_article(article):
     query = {'id': article['id']}
 
     # add for which query article was returned
-    article['query'] = query
+    article['query'] = q
 
     print 'Inserting id: %s' % (article['id'])
     articles_collection.update(
@@ -33,7 +33,7 @@ def insert_articles(articles):
 
 
 def get_articles(page):
-    request_response = get_guardian_search(query, api_key, page)
+    request_response = get_guardian_search(q, api_key, page)
 
     if (request_response and request_response['response']['results']):
         articles = request_response['response']['results']
@@ -55,4 +55,4 @@ def get_articles(page):
 
 
 if __name__ == '__main__':
-    get_articles(210)
+    get_articles(1)
