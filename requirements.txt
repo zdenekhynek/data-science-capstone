@@ -1,9 +1,9 @@
-Collecting simplejson
-  Downloading simplejson-3.10.0.tar.gz (77kB)
-Building wheels for collected packages: simplejson
-  Running setup.py bdist_wheel for simplejson: started
-  Running setup.py bdist_wheel for simplejson: finished with status 'done'
-  Stored in directory: /Users/zdenekhynek/Library/Caches/pip/wheels/43/c5/ef/edcebbb19becffd2ba75bf219afdbb4ca85198b2d909f1b31b
-Successfully built simplejson
-Installing collected packages: simplejson
-Successfully installed simplejson-3.10.0
+Collecting BeautifulSoup
+  Downloading BeautifulSoup-3.2.1.tar.gz
+Building wheels for collected packages: BeautifulSoup
+  Running setup.py bdist_wheel for BeautifulSoup: started
+  Running setup.py bdist_wheel for BeautifulSoup: finished with status 'done'
+  Stored in directory: /Users/zdenekhynek/Library/Caches/pip/wheels/5e/be/6d/ed01d5d434a821557b674c9da976f60b1b93d9009447eb9d16
+Successfully built BeautifulSoup
+Installing collected packages: BeautifulSoup
+Successfully installed BeautifulSoup-3.2.1
