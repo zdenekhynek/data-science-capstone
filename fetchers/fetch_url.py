@@ -2,7 +2,7 @@ import requests
 import simplejson as json
 
 
-def get_url(url):
+def fetch(url):
     response = requests.get(url)
 
     if response.status_code == 200:
