@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cb65967bdf3a7372749ce6144be4ee63f412aeeac624342fda3a2b58b1c43c15"
+            "sha256": "66f846def44cd8dd6cc8fac912ae066f4aa4f50bbee1d44cd6b75ab3df77706e"
         },
         "requires": {},
         "sources": [
@@ -11,6 +11,103 @@
             }
         ]
     },
-    "default": {},
+    "default": {
+        "Cycler": {
+            "hash": "sha256:1d8a5ae1ff6c5cf9b93e8811e581232ad8920aeec647c37316ceac982b08cb2d",
+            "version": "==0.10.0"
+        },
+        "beautifulsoup4": {
+            "hash": "sha256:11a9a27b7d3bddc6d86f59fb76afb70e921a25ac2d6cc55b40d072bd68435a76",
+            "version": "==4.6.0"
+        },
+        "boto": {
+            "hash": "sha256:daa8cd950d546b848c907676aa3a57bbbc1486700646d13be9a01485794821ad",
+            "version": "==2.47.0"
+        },
+        "bz2file": {
+            "hash": "sha256:64c1f811e31556ba9931953c8ec7b397488726c63e09a4c67004f43bdd28da88",
+            "version": "==0.98"
+        },
+        "certifi": {
+            "hash": "sha256:f4318671072f030a33c7ca6acaef720ddd50ff124d1388e50c1bda4cbd6d7010",
+            "version": "==2017.4.17"
+        },
+        "chardet": {
+            "hash": "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691",
+            "version": "==3.0.4"
+        },
+        "gensim": {
+            "hash": "sha256:246b53cc7eccb09ba2711e852e3d5bd5eb007d433dbfa7c33493e45edcac5ac3",
+            "version": "==2.1.0"
+        },
+        "idna": {
+            "hash": "sha256:cc19709fd6d0cbfed39ea875d29ba6d4e22c0cebc510a76d6302a28385e8bb70",
+            "version": "==2.5"
+        },
+        "matplotlib": {
+            "hash": "sha256:ec9f09fd35624b735271997527e2c2fd7f905d1612ce5dabdda4836a15ab7411",
+            "version": "==2.0.2"
+        },
+        "nltk": {
+            "hash": "sha256:8682ae52f5de4f2ba7b77bd78222a38575ad01ef29946214b254dfdf93a3a0eb",
+            "version": "==3.2.4"
+        },
+        "numpy": {
+            "hash": "sha256:4e9756c9882836690c6cfad0ae3fae51050d78a5766d3e9ecc7a8385425fb92a",
+            "version": "==1.13.0"
+        },
+        "pandas": {
+            "hash": "sha256:20e06f091278646c58cd1b227bd671b505ba911a581bb77b4c5ca516c89fc846",
+            "version": "==0.20.2"
+        },
+        "pymongo": {
+            "hash": "sha256:d359349c6c9ff9f482805f89e66e476846317dc7b1eea979d7da9c0857ee2721",
+            "version": "==3.4.0"
+        },
+        "pyparsing": {
+            "hash": "sha256:fee43f17a9c4087e7ed1605bd6df994c6173c1e977d7ade7b651292fab2bd010",
+            "version": "==2.2.0"
+        },
+        "python-dateutil": {
+            "hash": "sha256:537bf2a8f8ce6f6862ad705cd68f9e405c0b5db014aa40fa29eab4335d4b1716",
+            "version": "==2.6.0"
+        },
+        "pytz": {
+            "hash": "sha256:d1d6729c85acea5423671382868627129432fba9a89ecbb248d8d1c7a9f01c67",
+            "version": "==2017.2"
+        },
+        "requests": {
+            "hash": "sha256:baf701b4a9d4cbe40169e8ab77816f7abadbad502ba459c30f7a2bc138e4d612",
+            "version": "==2.17.3"
+        },
+        "scikit-learn": {
+            "hash": "sha256:b10c7f586abe1f5bbf2cabdfa6f3ab8e559cd9fac516fdff71e5bd2997699265",
+            "version": "==0.18.1"
+        },
+        "scipy": {
+            "hash": "sha256:e1c45905f550b5f14e1f47697c92bab5c1e6ba77da5a441bd2affa4621c41b26",
+            "version": "==0.19.0"
+        },
+        "simplejson": {
+            "hash": "sha256:953be622e88323c6f43fad61ffd05bebe73b9fd9863a46d68b052d2aa7d71ce2",
+            "version": "==3.10.0"
+        },
+        "six": {
+            "hash": "sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1",
+            "version": "==1.10.0"
+        },
+        "sklearn": {
+            "hash": "sha256:e23001573aa194b834122d2b9562459bf5ae494a2d59ca6b8aa22c85a44c0e31",
+            "version": "==0.0"
+        },
+        "smart_open": {
+            "hash": "sha256:fad4669acc2e6eb290b87265813cdb767e455e5f60f34af609da0c775c38b254",
+            "version": "==1.5.3"
+        },
+        "urllib3": {
+            "hash": "sha256:8ed6d5c1ff9d6ba84677310060d6a3a78ca3072ce0684cb3c645023009c114b1",
+            "version": "==1.21.1"
+        }
+    },
     "develop": {}
 }

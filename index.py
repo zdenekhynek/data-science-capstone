@@ -1,42 +1,82 @@
 import os
-from pymongo import MongoClient
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.cluster import KMeans
 
-
-from tokenize import tokenize
-from stop_words import filter_stop_words
+from articles import articles
 from remove_html import remove_html
+from tokenizer import tokenizer
+from stop_words import filter_stop_words
+from stem_words import stem_words
+from sklearn.externals import joblib
 
-print('hello')
+def get_document_texts(documents):
+  texts = []
 
-# from geocode_text import geocode_text
+  for document in documents:
+    text = document['fields']['body']
+    texts.append(text)
 
-# 1. collect articles
-#api_key = os.environ['GUARDIAN_API_KEY']
-
-#client = MongoClient()
-#db = client['capstone']
-
-#articles_collection = db.articles
-
-# get only first one for testing
-#first = articles_collection.find().next()
-#body = first['fields']['body']
-
-# 2. remove html
-#clean_body = remove_html(body)
-
-# 3. tokenize
-#tokenized = tokenize(clean_body)
-
-# 4. stop word removal
-#stop_removed = filter_stop_words(tokenized)
-
-#print stop_removed
-
-# 5. stemming
+  return texts
 
 
-# 6. tf-idf
+def remove_html_from_texts(texts):
+  return list(
+    map(remove_html, texts)
+  )
 
 
-# 7. geocode result
+def tokenize_and_stem(text):
+  tokenized = tokenizer.tokenize(text)
+  stemmed = stem_words(tokenized)
+  return stemmed
+
+
+# 1. get the documents
+documents = articles.get_articles().limit(100)
+
+# 2. get just body documents
+texts = get_document_texts(documents)
+
+# 3. remove html
+texts = remove_html_from_texts(texts)
+
+
+# 3. tokenize + 4. stop word + 5. stemming + 6. tf-idf
+tf_idf_vectorizer = TfidfVectorizer(
+  stop_words='english',
+  use_idf=True,
+  tokenizer=tokenize_and_stem,
+  ngram_range=(1,3)
+)
+
+tf_idf_matrix = tf_idf_vectorizer.fit_transform(texts)
+terms = tf_idf_vectorizer.get_feature_names()
+
+# 7. k-means
+
+# see if we already have the model
+model_file_path = 'k_means_clusters.pkl'
+
+km = False
+
+if (os.path.exists(model_file_path)):
+  print('loading saved model')
+  km = joblib.load(model_file_path)
+else:
+  print('recreating model')
+  num_clusters = 5
+  km = KMeans(n_clusters=num_clusters)
+  km.fit(tf_idf_matrix)
+
+  # save result
+  joblib.dump(km, model_file_path)
+
+
+# print('terms', terms)
+
+# clusters = km.labels_.tolist()
+
+# sort cluster centers by proximity to centroid
+# order_centroids = km.cluster_centers_.argsort()[:, ::-1]
+
+# print(order_centroids)

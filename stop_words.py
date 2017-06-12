@@ -1,6 +1,6 @@
 from nltk.corpus import stopwords
 
-english_stops = set(stopwords.words('english'))
+english_stops = stopwords.words('english')
 
 
 def filter_stop_words(words, stops=english_stops):

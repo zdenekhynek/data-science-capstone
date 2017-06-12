@@ -3,16 +3,8 @@ import time
 
 from fetchers import fetch_guardian_articles
 
-
-#api_key = os.environ['GUARDIAN_API_KEY']
-#q = 'terrorist'
-
-#client = MongoClient()
-#db = client['capstone']
-
-#articles_collection = db.articles
-
 IN_BETWEEN_REQUESTS_GAP = 1
+
 
 def add_query_to_article(article, query = ''):
     article['query'] = query
@@ -49,6 +41,7 @@ def fetch_articles(callback, api_key, query, page, from_date, to_date, collectio
             callback(collection)
     else:
         print('Nothing found')
+
 
 def fetch(callback, api_key, query='', page=1, from_date=False, to_date=False):
     fetch_articles(callback, api_key, query, page, from_date, to_date)
