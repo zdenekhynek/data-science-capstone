@@ -1,13 +1,15 @@
 import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
+from sklearn.externals import joblib
 
 from articles import articles
-from remove_html import remove_html
+
 from tokenizer import tokenizer
-from stop_words import filter_stop_words
-from stem_words import stem_words
-from sklearn.externals import joblib
+from tokenizer.remove_html import remove_html
+from tokenizer.stop_words import filter_stop_words
+from tokenizer.stem_words import stem_words
+from tokenizer.remove_punctuation import remove_punctuation
 
 def get_document_texts(documents):
   texts = []
@@ -26,9 +28,17 @@ def remove_html_from_texts(texts):
 
 
 def tokenize_and_stem(text):
-  tokenized = tokenizer.tokenize(text)
-  stemmed = stem_words(tokenized)
-  return stemmed
+  # tokenize
+  tokens = tokenizer.tokenize(text)
+
+  # remove punctuation
+  tokens = remove_punctuation(tokens)
+
+  # stem
+  tokens = stem_words(tokens)
+
+  # to lowercase
+  return tokens
 
 
 # 1. get the documents
