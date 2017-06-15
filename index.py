@@ -1,5 +1,4 @@
 import os
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 from sklearn.externals import joblib
 
@@ -10,6 +9,9 @@ from tokenizer.remove_html import remove_html
 from tokenizer.stop_words import filter_stop_words
 from tokenizer.stem_words import stem_words
 from tokenizer.remove_punctuation import remove_punctuation
+
+from vectorization import tf_idf
+
 
 def get_document_texts(documents):
   texts = []
@@ -42,7 +44,7 @@ def tokenize_and_stem(text):
 
 
 # 1. get the documents
-documents = articles.get_articles().limit(100)
+documents = articles.get_articles().limit(1)
 
 # 2. get just body documents
 texts = get_document_texts(documents)
@@ -50,36 +52,12 @@ texts = get_document_texts(documents)
 # 3. remove html
 texts = remove_html_from_texts(texts)
 
+# 4. tf_idf
+vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem)
+terms = vectorizer.get_feature_names()
 
-# 3. tokenize + 4. stop word + 5. stemming + 6. tf-idf
-tf_idf_vectorizer = TfidfVectorizer(
-  stop_words='english',
-  use_idf=True,
-  tokenizer=tokenize_and_stem,
-  ngram_range=(1,3)
-)
+# 5. k-means
 
-tf_idf_matrix = tf_idf_vectorizer.fit_transform(texts)
-terms = tf_idf_vectorizer.get_feature_names()
-
-# 7. k-means
-
-# see if we already have the model
-model_file_path = 'k_means_clusters.pkl'
-
-km = False
-
-if (os.path.exists(model_file_path)):
-  print('loading saved model')
-  km = joblib.load(model_file_path)
-else:
-  print('recreating model')
-  num_clusters = 5
-  km = KMeans(n_clusters=num_clusters)
-  km.fit(tf_idf_matrix)
-
-  # save result
-  joblib.dump(km, model_file_path)
 
 
 # print('terms', terms)
