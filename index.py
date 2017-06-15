@@ -1,7 +1,3 @@
-import os
-from sklearn.cluster import KMeans
-from sklearn.externals import joblib
-
 from articles import articles
 
 from tokenizer import tokenizer
@@ -11,6 +7,8 @@ from tokenizer.stem_words import stem_words
 from tokenizer.remove_punctuation import remove_punctuation
 
 from vectorization import tf_idf
+
+from clusterization import k_means
 
 
 def get_document_texts(documents):
@@ -44,7 +42,7 @@ def tokenize_and_stem(text):
 
 
 # 1. get the documents
-documents = articles.get_articles().limit(1)
+documents = articles.get_articles().limit(10)
 
 # 2. get just body documents
 texts = get_document_texts(documents)
@@ -57,14 +55,4 @@ vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem)
 terms = vectorizer.get_feature_names()
 
 # 5. k-means
-
-
-
-# print('terms', terms)
-
-# clusters = km.labels_.tolist()
-
-# sort cluster centers by proximity to centroid
-# order_centroids = km.cluster_centers_.argsort()[:, ::-1]
-
-# print(order_centroids)
+k_means.fit_clusters(matrix)
