@@ -1,4 +1,4 @@
-result_file_path = 'data/cluster_keywords_titles.txt'
+TEXT_VISUALISATION_FILE_PATH = 'data/cluster_keywords_titles.txt'
 
 def store_results(string, file_path):
   with open(file_path, 'w') as f:
@@ -7,7 +7,7 @@ def store_results(string, file_path):
 
 
 def print_cluster_keywords_and_titles(articles, cluster_model, vectorizer,
-  result_file = result_file_path):
+  result_file = TEXT_VISUALISATION_FILE_PATH):
   result = ''
 
   feature_names = vectorizer.get_feature_names()

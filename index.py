@@ -14,9 +14,9 @@ from vectorization import tf_idf
 
 from clusterization import k_means, truncated_svd, lda
 
-from visualisation.text_visualisation import print_cluster_keywords_and_titles, result_file_path
-from visualisation.pca_scatter import plot_scatter, default_image_path
-from visualisation.lda_topics import print_lda_topics, DEFAULT_LDA_TOPIC_FILE_PATH
+from visualisation.text_visualisation import print_cluster_keywords_and_titles, TEXT_VISUALISATION_FILE_PATH
+from visualisation.pca_scatter import plot_scatter, PCA_SCATTER_FILE_PATH
+from visualisation.lda_topics import print_lda_topics, LDA_TOPIC_FILE_PATH
 
 # CLI arguments
 parser = argparse.ArgumentParser()
@@ -92,14 +92,14 @@ clusters = cluster_model.labels_
 df = pd.DataFrame(articles)
 df['cluster'] = clusters
 
-file_path = result_file_path.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
+file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
 print_cluster_keywords_and_titles(df, cluster_model, vectorizer, file_path)
 
 # 6. PCA
 xs_ys = truncated_svd.fit_transform(matrix)
 df['x'] = xs_ys[:,0]
 df['y'] = xs_ys[:,1]
-file_path = default_image_path.replace('.png', '_limit_' + str(cli_limit) + '.png')
+file_path = PCA_SCATTER_FILE_PATH.replace('.png', '_limit_' + str(cli_limit) + '.png')
 plot_scatter(df, file_path)
 
 # 7. LDA
@@ -110,5 +110,5 @@ tokenized_texts = [tokenize_and_stem(text) for text in texts]
 tokens = [filter_stop_words(text) for text in tokenized_texts]
 
 fitted_lda = lda.fit_model(tokens)
-file_path = DEFAULT_LDA_TOPIC_FILE_PATH.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
+file_path = LDA_TOPIC_FILE_PATH.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
 print_lda_topics(fitted_lda, file_path)

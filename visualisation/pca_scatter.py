@@ -7,14 +7,14 @@ mpl.use('TkAgg')
 import matplotlib.pyplot as plt
 
 
-default_image_path = 'data/svg_scatter.png'
+PCA_SCATTER_FILE_PATH = 'data/svg_scatter.png'
 
-def save_plot(plt, image_path = default_image_path):
+def save_plot(plt, image_path = PCA_SCATTER_FILE_PATH):
   plt.savefig(image_path)
   Image.open(image_path).save(image_path,'png')
 
 
-def plot_scatter(df, image_path = default_image_path):
+def plot_scatter(df, image_path = PCA_SCATTER_FILE_PATH):
   # group by cluster
   groups = df.groupby(by='cluster')
   clusters = df['cluster']
