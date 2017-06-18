@@ -5,6 +5,7 @@ from sklearn.externals import joblib
 # see if we already have the model
 model_file_path = 'data/k_means_clusters.pkl'
 
+km = False
 
 def has_cached_model(cache_path = model_file_path):
   return os.path.exists(cache_path)
@@ -23,6 +24,8 @@ def cache_model(model, cache_path = model_file_path):
 
 
 def fit_clusters(vector_matrix, num_clusters = 5, cache = True):
+  global km
+
   # do we have cached model
   cached_model = get_cached_model()
   if cached_model:
