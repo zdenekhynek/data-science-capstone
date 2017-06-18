@@ -12,10 +12,10 @@ from tokenizer.remove_punctuation import remove_punctuation
 
 from vectorization import tf_idf
 
-from clusterization import k_means
+from clusterization import k_means, truncated_svd
 
 from visualisation.text_visualisation import print_cluster_keywords_and_titles, result_file_path
-
+from visualisation.pca_scatter import plot_scatter, default_image_path
 
 # CLI arguments
 parser = argparse.ArgumentParser()
@@ -84,16 +84,24 @@ important_tokens = most_important_tokens(vectorizer)
 # print('Most important tokens', important_tokens)
 
 # 5. k-means
-cache_file = k_means.model_file_path.replace('.pkl', '_limit_' + str(cli_limit) + '.pkl')
-cluster_model = k_means.fit_clusters(matrix, cli_clusters, cache_file)
+file_path = k_means.model_file_path.replace('.pkl', '_limit_' + str(cli_limit) + '.pkl')
+cluster_model = k_means.fit_clusters(matrix, cli_clusters, file_path)
 clusters = cluster_model.labels_
 
 df = pd.DataFrame(articles)
 df['cluster'] = clusters
 
-# construct path
-result_file = result_file_path.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
-print_cluster_keywords_and_titles(df, cluster_model, vectorizer, result_file)
+file_path = result_file_path.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
+print_cluster_keywords_and_titles(df, cluster_model, vectorizer, file_path)
+
+# 6. PCA
+xs_ys = truncated_svd.fit_transform(matrix)
+df['x'] = xs_ys[:,0]
+df['y'] = xs_ys[:,1]
+file_path = default_image_path.replace('.png', '_limit_' + str(cli_limit) + '.png')
+plot_scatter(df, file_path)
+
+print(xs_ys)
 
 # print(ordered_centroids[0][1])
 # print(tokens[ordered_centroids[0][2]])
