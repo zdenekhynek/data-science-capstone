@@ -10,30 +10,31 @@ CACHE_OPERATION_KEY = 'k-means'
 km = False
 
 
-def fit_clusters(vector_matrix, num_clusters = 5, cache_params = {}):
-  global km
+def fit_clusters(vector_matrix, num_clusters=5, cache_params={}):
+    global km
 
-  cache_params['operation'] = CACHE_OPERATION_KEY
-  cache_params['num_clusters'] = num_clusters
+    cache_params['operation'] = CACHE_OPERATION_KEY
+    cache_params['num_clusters'] = num_clusters
 
-  # do we have cached model?
-  cached_model = caching.get_results(cache_params)
-  if cached_model:
-     print('K-Means using cached model')
-     return cached_model
+    # do we have cached model?
+    cached_model = caching.get_results(cache_params)
+    if cached_model:
+        print('K-Means using cached model')
+        return cached_model
 
-  print('K-Means computing model')
+    print('K-Means computing model')
 
-  # we don't have cache model, instatniate k means
-  km = KMeans(n_clusters=num_clusters)
-  km.fit(vector_matrix)
+    # we don't have cache model, instatniate k means
+    km = KMeans(n_clusters=num_clusters)
+    km.fit(vector_matrix)
 
-  # cache model
-  caching.store_result(cache_params, km)
+    # cache model
+    caching.store_result(cache_params, km)
 
-  return km
+    return km
 
 
 def print_silhouette_score(matrix, clusters, n_clusters):
-  silhouette_avg = silhouette_score(matrix, clusters)
-  print("For n_clusters =", n_clusters, "The average silhouette_score is :", silhouette_avg)
+    silhouette_avg = silhouette_score(matrix, clusters)
+    print("For n_clusters =", n_clusters,
+          "The average silhouette_score is :", silhouette_avg)

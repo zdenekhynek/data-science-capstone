@@ -6,12 +6,12 @@ from fetchers import fetch_guardian_articles
 IN_BETWEEN_REQUESTS_GAP = 1
 
 
-def add_query_to_article(article, query = ''):
+def add_query_to_article(article, query=''):
     article['query'] = query
     return article
 
 
-def fetch_articles(callback, api_key, query, page, from_date, to_date, collection = []):
+def fetch_articles(callback, api_key, query, page, from_date, to_date, collection=[]):
     response = fetch_guardian_articles.fetch(api_key, query, page, from_date, to_date)
 
     if (response and response['results']):

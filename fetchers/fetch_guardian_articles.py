@@ -23,10 +23,10 @@ def create_guardian_search_url(api_key, query, page, from_date, to_date):
 
 
 def fetch(api_key, query, page=1, from_date=False, to_date=False):
-  url = create_guardian_search_url(api_key, query, page, from_date, to_date)
-  request_response = fetch_url.fetch(url)
+    url = create_guardian_search_url(api_key, query, page, from_date, to_date)
+    request_response = fetch_url.fetch(url)
 
-  if (request_response):
-    return request_response['response']
-  else:
-    return False
+    if (request_response):
+        return request_response['response']
+    else:
+        return False
