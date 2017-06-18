@@ -23,20 +23,21 @@ def cache_model(model, cache_path = model_file_path):
   joblib.dump(model, cache_path)
 
 
-def fit_clusters(vector_matrix, num_clusters = 5, cache = True):
+def fit_clusters(vector_matrix, num_clusters = 5, cache_path = model_file_path):
   global km
 
   # do we have cached model
-  cached_model = get_cached_model()
-  if cached_model:
-    return cached_model
+  if cache_path:
+    cached_model = get_cached_model(cache_path)
+    if cached_model:
+      return cached_model
 
   # we don't have cache model, instatniate k means
   km = KMeans(n_clusters=num_clusters)
   km.fit(vector_matrix)
 
   # cache model?
-  if cache:
-    cache_model(km)
+  if cache_path:
+    cache_model(km, cache_path)
 
   return km

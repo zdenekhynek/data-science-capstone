@@ -20,8 +20,10 @@ from visualisation.text_visualisation import print_cluster_keywords_and_titles, 
 # CLI arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('-l', '--limit', help='Number of articles', default=10)
-args = parser.parse_args()
-limit = int(args.limit)
+parser.add_argument('-c', '--clusters', help='Number of clusters', default=5)
+cli_args = parser.parse_args()
+cli_limit = int(cli_args.limit)
+cli_clusters = int(cli_args.clusters)
 
 def get_document_texts(documents):
   return [document['fields']['body'] for document in documents]
@@ -61,7 +63,7 @@ def most_important_tokens(vectorizer):
 
 
 # 1. get the documents
-documents = articles.get_articles().limit(limit)
+documents = articles.get_articles().limit(cli_limit)
 articles = [document for document in documents]
 
 # 2. get just body documents
@@ -82,14 +84,15 @@ important_tokens = most_important_tokens(vectorizer)
 # print('Most important tokens', important_tokens)
 
 # 5. k-means
-cluster_model = k_means.fit_clusters(matrix)
+cache_file = k_means.model_file_path.replace('.pkl', '_limit_' + str(cli_limit) + '.pkl')
+cluster_model = k_means.fit_clusters(matrix, cli_clusters, cache_file)
 clusters = cluster_model.labels_
 
 df = pd.DataFrame(articles)
 df['cluster'] = clusters
 
 # construct path
-result_file = result_file_path.replace('.txt', '_limit_' + str(limit) + '.txt')
+result_file = result_file_path.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
 print_cluster_keywords_and_titles(df, cluster_model, vectorizer, result_file)
 
 # print(ordered_centroids[0][1])
