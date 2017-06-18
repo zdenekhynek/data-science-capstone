@@ -1,6 +1,7 @@
 import os
 from sklearn.cluster import KMeans
 from sklearn.externals import joblib
+from sklearn.metrics import silhouette_score
 
 # see if we already have the model
 model_file_path = 'data/k_means_clusters.pkl'
@@ -41,3 +42,8 @@ def fit_clusters(vector_matrix, num_clusters = 5, cache_path = model_file_path):
     cache_model(km, cache_path)
 
   return km
+
+
+def print_silhouette_score(matrix, clusters, n_clusters):
+  silhouette_avg = silhouette_score(matrix, clusters)
+  print("For n_clusters =", n_clusters, "The average silhouette_score is :", silhouette_avg)

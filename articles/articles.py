@@ -15,3 +15,6 @@ def get_articles(query = {}):
   collection = get_collection()
   return collection.find(query)
 
+
+def get_document_texts(documents):
+  return [document['fields']['body'] for document in documents]
