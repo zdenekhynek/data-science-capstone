@@ -1,5 +1,6 @@
 from collections import Counter
 import pandas as pd
+import argparse
 
 from articles import articles
 
@@ -13,12 +14,14 @@ from vectorization import tf_idf
 
 from clusterization import k_means
 
-from visualisation.text_visualisation import print_cluster_keywords_and_titles
+from visualisation.text_visualisation import print_cluster_keywords_and_titles, result_file_path
 
 
-# options
-NUMBER_OF_ARTICLES = 10
-
+# CLI arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('-l', '--limit', help='Number of articles', default=10)
+args = parser.parse_args()
+limit = int(args.limit)
 
 def get_document_texts(documents):
   return [document['fields']['body'] for document in documents]
@@ -58,7 +61,7 @@ def most_important_tokens(vectorizer):
 
 
 # 1. get the documents
-documents = articles.get_articles().limit(NUMBER_OF_ARTICLES)
+documents = articles.get_articles().limit(limit)
 articles = [document for document in documents]
 
 # 2. get just body documents
@@ -85,10 +88,12 @@ clusters = cluster_model.labels_
 df = pd.DataFrame(articles)
 df['cluster'] = clusters
 
-print_cluster_keywords_and_titles(df, cluster_model, vectorizer)
+# construct path
+result_file = result_file_path.replace('.txt', '_limit_' + str(limit) + '.txt')
+print_cluster_keywords_and_titles(df, cluster_model, vectorizer, result_file)
 
 # print(ordered_centroids[0][1])
 # print(tokens[ordered_centroids[0][2]])
-#[print(document) for document in documents]
+# [print(document) for document in documents]
 # print(clusters)
 # print(cluster_model.cluster_centers_.shape)
