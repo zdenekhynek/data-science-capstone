@@ -13,6 +13,12 @@ from vectorization import tf_idf
 
 from clusterization import k_means
 
+from visualisation.text_visualisation import print_cluster_keywords_and_titles
+
+
+# options
+NUMBER_OF_ARTICLES = 10
+
 
 def get_document_texts(documents):
   return [document['fields']['body'] for document in documents]
@@ -51,31 +57,8 @@ def most_important_tokens(vectorizer):
   return df.head(30)
 
 
-def print_cluster_keywords_and_titles(articles, cluster_model, vectorizer):
-  feature_names = vectorizer.get_feature_names()
-
-  ordered_centroids = cluster_model.cluster_centers_.argsort()[::-1]
-  num_clusters = ordered_centroids.shape[0]
-
-  # print out words
-  for i in range(num_clusters):
-    print('Cluster {0}:'.format(i))
-    cluster_centroid = ordered_centroids[i]
-    top_10_indices = cluster_centroid[:10]
-
-    print('Words:')
-    for index in top_10_indices:
-      print(feature_names[index])
-
-  # print out titles
-  grouped_articles = articles.groupby(by='cluster')
-  for index, group in grouped_articles:
-    print('Cluster {0}'.format(index))
-    print(group['webTitle'])
-
-
 # 1. get the documents
-documents = articles.get_articles().limit(10)
+documents = articles.get_articles().limit(NUMBER_OF_ARTICLES)
 articles = [document for document in documents]
 
 # 2. get just body documents
