@@ -13,8 +13,10 @@ def fit_texts(texts, tokenizer, ngram_range=(1,3), stop_words='english', cache_p
   # do we have cached model?
   cached_model = caching.get_results(cache_params)
   if cached_model:
+     print('TF-IDF using cached model')
      return cached_model
 
+  print('TF-IDF computing model')
 
   vectorizer = TfidfVectorizer(
     stop_words=stop_words,

@@ -19,7 +19,11 @@ def fit_transform(data, num_components = NUMBER_OF_COMPONENTS, cache_params={}):
   # do we have cached model?
   cached_model = caching.get_results(cache_params)
   if cached_model:
-     return cached_model
+    print('Truncated SVD using cached model')
+    return cached_model
+
+
+  print('Truncated SVD computing model')
 
   svd = TruncatedSVD(n_components = num_components)
   svd_transformed = svd.fit_transform(data)

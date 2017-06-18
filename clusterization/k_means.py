@@ -19,7 +19,10 @@ def fit_clusters(vector_matrix, num_clusters = 5, cache_params = {}):
   # do we have cached model?
   cached_model = caching.get_results(cache_params)
   if cached_model:
+     print('K-Means using cached model')
      return cached_model
+
+  print('K-Means computing model')
 
   # we don't have cache model, instatniate k means
   km = KMeans(n_clusters=num_clusters)
