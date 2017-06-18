@@ -12,10 +12,11 @@ from tokenizer.remove_punctuation import remove_punctuation
 
 from vectorization import tf_idf
 
-from clusterization import k_means, truncated_svd
+from clusterization import k_means, truncated_svd, lda
 
 from visualisation.text_visualisation import print_cluster_keywords_and_titles, result_file_path
 from visualisation.pca_scatter import plot_scatter, default_image_path
+from visualisation.lda_topics import print_lda_topics, DEFAULT_LDA_TOPIC_FILE_PATH
 
 # CLI arguments
 parser = argparse.ArgumentParser()
@@ -101,10 +102,13 @@ df['y'] = xs_ys[:,1]
 file_path = default_image_path.replace('.png', '_limit_' + str(cli_limit) + '.png')
 plot_scatter(df, file_path)
 
-print(xs_ys)
+# 7. LDA
+# tokenize
+tokenized_texts = [tokenize_and_stem(text) for text in texts]
 
-# print(ordered_centroids[0][1])
-# print(tokens[ordered_centroids[0][2]])
-# [print(document) for document in documents]
-# print(clusters)
-# print(cluster_model.cluster_centers_.shape)
+# remove stop word
+tokens = [filter_stop_words(text) for text in tokenized_texts]
+
+fitted_lda = lda.fit_model(tokens)
+file_path = DEFAULT_LDA_TOPIC_FILE_PATH.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
+print_lda_topics(fitted_lda, file_path)
