@@ -29,6 +29,9 @@ cli_limit = int(cli_args.limit)
 cli_clusters = int(cli_args.clusters)
 
 
+cache_params = {'limit': cli_limit}
+
+
 def tokenize_and_stem(text):
   # tokenize
   tokens = tokenizer.tokenize(text)
@@ -80,8 +83,9 @@ t = time.process_time()
 keywords = most_common_tokens(texts)
 # print('Keywords', keywords)
 
+
 # 4. tf_idf
-vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem)
+vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem, (1,3), 'english', cache_params)
 terms = vectorizer.get_feature_names()
 
 important_tokens = most_important_tokens(vectorizer)
@@ -92,7 +96,7 @@ t = time.process_time()
 
 
 # 5. k-means
-cluster_model = k_means.fit_clusters(matrix, cli_clusters, { 'limit': cli_limit })
+cluster_model = k_means.fit_clusters(matrix, cli_clusters, cache_params)
 clusters = cluster_model.labels_
 k_means.print_silhouette_score(matrix, clusters, cli_clusters)
 
@@ -104,9 +108,10 @@ df['cluster'] = clusters
 file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
 print_cluster_keywords_and_titles(df, cluster_model, vectorizer, file_path)
 
+
 # 6. PCA
 t = time.process_time()
-xs_ys = truncated_svd.fit_transform(matrix)
+svd, xs_ys = truncated_svd.fit_transform(matrix, 2, cache_params)
 df['x'] = xs_ys[:,0]
 df['y'] = xs_ys[:,1]
 file_path = PCA_SCATTER_FILE_PATH.replace('.png', '_limit_' + str(cli_limit) + '.png')
