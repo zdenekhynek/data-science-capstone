@@ -17,16 +17,13 @@ def save_plot(plt, image_path = default_image_path):
 def plot_scatter(df, image_path = default_image_path):
   # group by cluster
   groups = df.groupby(by='cluster')
+  clusters = df['cluster']
 
   # set up plot
-  fig, ax = plt.subplots(figsize=(17, 9)) # set size
-  ax.margins(0.05) # Optional, just adds 5% padding to the autoscaling
+  fig, ax = plt.subplots(figsize=(20,15)) # set size
 
-  # iterate through groups to layer the plot
-  # note that I use the cluster_name and cluster_color dicts with the 'name' lookup to return the appropriate color/label
   for name, group in groups:
-      ax.plot(group.x, group.y, marker='o', linestyle='', ms=12,
-              label=clusters, mec='none')
+      ax.plot(group.x, group.y, label=clusters, marker='o', ms=12, linestyle='')
       ax.set_aspect('auto')
       ax.tick_params(\
           axis= 'x',         # changes apply to the x-axis
@@ -45,6 +42,5 @@ def plot_scatter(df, image_path = default_image_path):
   for i in range(len(df)):
       ax.text(df.ix[i]['x'], df.ix[i]['y'], df.ix[i]['webTitle'], size=8)
 
-  #plt.show() #show the plot
-
+  # ax.legend(numpoints=1)
   save_plot(plt, image_path)
