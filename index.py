@@ -19,6 +19,8 @@ from visualisation.text_visualisation import print_cluster_keywords_and_titles, 
 from visualisation.pca_scatter import plot_scatter, PCA_SCATTER_FILE_PATH
 from visualisation.lda_topics import print_lda_topics, LDA_TOPIC_FILE_PATH
 
+from caching import caching
+
 
 # CLI arguments
 parser = argparse.ArgumentParser()
@@ -99,6 +101,13 @@ vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem, (1, 3),
 print('4. TF-IDF', time.process_time() - t)
 t = time.process_time()
 
+# 5. k-means
+cluster_model = k_means.fit_clusters(matrix, cli_clusters, cache_params)
+clusters = cluster_model.labels_
+k_means.print_silhouette_score(matrix, clusters, cli_clusters)
+
+print('5. K-Means', time.process_time() - t)
+t = time.process_time()
 
 # 6. PCA
 svd, xs_ys = truncated_svd.fit_transform(matrix, 2, cache_params)
@@ -106,30 +115,24 @@ svd, xs_ys = truncated_svd.fit_transform(matrix, 2, cache_params)
 print('6. PCA', time.process_time() - t)
 t = time.process_time()
 
-# 5. k-means
-cluster_model = k_means.fit_clusters(xs_ys, cli_clusters, cache_params)
-clusters = cluster_model.labels_
-k_means.print_silhouette_score(xs_ys, clusters, cli_clusters)
-
-print('5. K-Means', time.process_time() - t)
-t = time.process_time()
-
-
 df = pd.DataFrame(article_docs)
 df['cluster'] = clusters
-
 df['x'] = xs_ys[:, 0]
 df['y'] = xs_ys[:, 1]
-file_path = PCA_SCATTER_FILE_PATH
-.replace('.png', '_limit_' + str(cli_limit) + '.png')
+
+# cache data frame
+df_cache_params = cache_params.copy()
+df_cache_params['operation'] = 'df'
+caching.store_result(df_cache_params, df)
+
+file_path = PCA_SCATTER_FILE_PATH.replace('.png', '_limit_' + str(cli_limit) + '.png')
 
 plot_scatter(df, file_path)
 
 print('6b. Plotting PCA', time.process_time() - t)
 t = time.process_time()
 
-file_path = TEXT_VISUALISATION_FILE_PATH
-.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
+file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
 
 print_cluster_keywords_and_titles(df, cluster_model, vectorizer, file_path)
 

@@ -13,11 +13,12 @@ km = False
 def fit_clusters(vector_matrix, num_clusters=5, cache_params={}):
     global km
 
-    cache_params['operation'] = CACHE_OPERATION_KEY
-    cache_params['num_clusters'] = num_clusters
+    params = cache_params.copy()
+    params['operation'] = CACHE_OPERATION_KEY
+    params['num_clusters'] = num_clusters
 
     # do we have cached model?
-    cached_model = caching.get_results(cache_params)
+    cached_model = caching.get_results(params)
     if cached_model:
         print('K-Means using cached model')
         return cached_model
@@ -29,7 +30,7 @@ def fit_clusters(vector_matrix, num_clusters=5, cache_params={}):
     km.fit(vector_matrix)
 
     # cache model
-    caching.store_result(cache_params, km)
+    caching.store_result(params, km)
 
     return km
 

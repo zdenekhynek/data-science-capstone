@@ -8,11 +8,12 @@ NUMBER_OF_COMPONENTS = 2
 pca = False
 
 
-def fit_transform(data, num_components=NUMBER_OF_COMPONENTS):
+def fit_transform(data, num_components=NUMBER_OF_COMPONENTS, cache_params={}):
     global pca
 
-    cache_params['operation'] = CACHE_OPERATION_KEY
-    cache_params['num_components'] = num_components
+    params = cache_params.copy()
+    params['operation'] = CACHE_OPERATION_KEY
+    params['num_components'] = num_components
 
     pca = PCA(n_components=num_components)
     pca_transformed = pca.fit_transform(data)
@@ -20,6 +21,6 @@ def fit_transform(data, num_components=NUMBER_OF_COMPONENTS):
     # print(pca.explained_variance_ratio_)
 
     result = (pca, pca_transformed)
-    caching.store_result(cache_params, result)
+    caching.store_result(params, result)
 
     return result

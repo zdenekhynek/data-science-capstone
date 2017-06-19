@@ -13,11 +13,12 @@ svd = False
 def fit_transform(data, num_components=NUMBER_OF_COMPONENTS, cache_params={}):
     global svd
 
-    cache_params['operation'] = CACHE_OPERATION_KEY
-    cache_params['num_components'] = num_components
+    params = cache_params.copy()
+    params['operation'] = CACHE_OPERATION_KEY
+    params['num_components'] = num_components
 
     # do we have cached model?
-    cached_model = caching.get_results(cache_params)
+    cached_model = caching.get_results(params)
     if cached_model:
         print('Truncated SVD using cached model')
         return cached_model
@@ -31,6 +32,6 @@ def fit_transform(data, num_components=NUMBER_OF_COMPONENTS, cache_params={}):
 
     # cache result
     result = (svd, svd_transformed)
-    caching.store_result(cache_params, result)
+    caching.store_result(params, result)
 
     return result
