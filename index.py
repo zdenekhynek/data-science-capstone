@@ -65,7 +65,10 @@ def most_important_tokens(vectorizer):
 
 t = time.process_time()
 
-# 1. get the documents
+####################################################
+# 1. get the documents a process them
+####################################################
+
 documents = articles.get_articles().limit(cli_limit)
 article_docs = [document for document in documents]
 
@@ -90,7 +93,10 @@ t = time.process_time()
 # print('Keywords', keywords)
 
 
+####################################################
 # 4. tf_idf
+####################################################
+
 vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem, (1, 3),
                                       'english', cache_params)
 
@@ -101,7 +107,11 @@ vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem, (1, 3),
 print('4. TF-IDF', time.process_time() - t)
 t = time.process_time()
 
+
+####################################################
 # 5. k-means
+####################################################
+
 cluster_model = k_means.fit_clusters(matrix, cli_clusters, cache_params)
 clusters = cluster_model.labels_
 k_means.print_silhouette_score(matrix, clusters, cli_clusters)
@@ -109,7 +119,11 @@ k_means.print_silhouette_score(matrix, clusters, cli_clusters)
 print('5. K-Means', time.process_time() - t)
 t = time.process_time()
 
+
+####################################################
 # 6. PCA
+####################################################
+
 svd, xs_ys = truncated_svd.fit_transform(matrix, 2, cache_params)
 
 print('6. PCA', time.process_time() - t)
@@ -123,7 +137,13 @@ df['y'] = xs_ys[:, 1]
 # cache data frame
 df_cache_params = cache_params.copy()
 df_cache_params['operation'] = 'df'
+df_cache_params['num_clusters'] = cli_limit
 caching.store_result(df_cache_params, df)
+
+
+####################################################
+# Plotting results
+####################################################
 
 file_path = PCA_SCATTER_FILE_PATH.replace('.png', '_limit_' + str(cli_limit) + '.png')
 
