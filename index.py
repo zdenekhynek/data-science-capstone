@@ -97,7 +97,8 @@ t = time.process_time()
 # 4. tf_idf
 ####################################################
 
-vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem, (1, 3),
+ngrams = (1, 1)
+vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem, ngrams,
                                       'english', cache_params)
 
 # terms = vectorizer.get_feature_names()
@@ -112,7 +113,9 @@ t = time.process_time()
 # 5. k-means
 ####################################################
 
-cluster_model = k_means.fit_clusters(matrix, cli_clusters, cache_params)
+kmeans_cache_params = cache_params.copy()
+kmeans_cache_params['ngrams'] = ngrams
+cluster_model = k_means.fit_clusters(matrix, cli_clusters, kmeans_cache_params)
 clusters = cluster_model.labels_
 k_means.print_silhouette_score(matrix, clusters, cli_clusters)
 
@@ -137,7 +140,7 @@ df['y'] = xs_ys[:, 1]
 # cache data frame
 df_cache_params = cache_params.copy()
 df_cache_params['operation'] = 'df'
-df_cache_params['num_clusters'] = cli_limit
+df_cache_params['num_clusters'] = cli_clusters
 caching.store_result(df_cache_params, df)
 
 
@@ -145,14 +148,14 @@ caching.store_result(df_cache_params, df)
 # Plotting results
 ####################################################
 
-file_path = PCA_SCATTER_FILE_PATH.replace('.png', '_limit_' + str(cli_limit) + '.png')
+file_path = PCA_SCATTER_FILE_PATH.replace('.png', '__num_clusters__' + str(cli_clusters) + '_limit_' + str(cli_limit) + '.png')
 
 plot_scatter(df, file_path)
 
 print('6b. Plotting PCA', time.process_time() - t)
 t = time.process_time()
 
-file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
+file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', '__num_clusters__' + str(cli_clusters) + '_limit_' + str(cli_limit) + '.txt')
 
 print_cluster_keywords_and_titles(df, cluster_model, vectorizer, file_path)
 
