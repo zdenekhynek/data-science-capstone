@@ -27,13 +27,13 @@ def plot_scatter(df, image_path=PCA_SCATTER_FILE_PATH):
         ax.plot(group.x, group.y, label=clusters, marker='o', ms=12,
                 linestyle='')
         ax.set_aspect('auto')
-        ax.tick_params(\
+        ax.tick_params(
           axis='x',         # changes apply to the x-axis
           which='both',      # both major and minor ticks are affected
           bottom='off',      # ticks along the bottom edge are off
           top='off',         # ticks along the top edge are off
           labelbottom='off')
-        ax.tick_params(\
+        ax.tick_params(
           axis='y',         # changes apply to the y-axis
           which='both',      # both major and minor ticks are affected
           left='off',        # ticks along the bottom edge are off

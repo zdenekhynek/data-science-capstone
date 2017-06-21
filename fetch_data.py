@@ -1,24 +1,23 @@
 import os
 import argparse
-from pymongo import MongoClient
 
 from articles import articles
 from fetchers import fetch_articles
 
 
 def insert_document_to_mongo(collection, document):
-  query = {'id': document['id']}
-  collection.update(query, document, True)
+    query = {'id': document['id']}
+    collection.update(query, document, True)
 
 
 def insert_documents_to_mongo(collection, documents):
-  for document in documents:
-    insert_document_to_mongo(collection, document)
+    for document in documents:
+        insert_document_to_mongo(collection, document)
 
 
 def on_fetch_complete(documents):
-  collection = articles.get_collection(DB_NAME, COLLECTION_NAME)
-  insert_documents_to_mongo(collection, documents)
+    collection = articles.get_collection(DB_NAME, COLLECTION_NAME)
+    insert_documents_to_mongo(collection, documents)
 
 
 if __name__ == '__main__':
