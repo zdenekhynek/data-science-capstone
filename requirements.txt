@@ -1,9 +1,0 @@
-Collecting BeautifulSoup
-  Downloading BeautifulSoup-3.2.1.tar.gz
-Building wheels for collected packages: BeautifulSoup
-  Running setup.py bdist_wheel for BeautifulSoup: started
-  Running setup.py bdist_wheel for BeautifulSoup: finished with status 'done'
-  Stored in directory: /Users/zdenekhynek/Library/Caches/pip/wheels/5e/be/6d/ed01d5d434a821557b674c9da976f60b1b93d9009447eb9d16
-Successfully built BeautifulSoup
-Installing collected packages: BeautifulSoup
-Successfully installed BeautifulSoup-3.2.1
