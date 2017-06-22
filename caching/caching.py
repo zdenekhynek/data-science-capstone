@@ -6,6 +6,7 @@ from database import DB_NAME, CACHE_COLLECTION_NAME
 
 
 CACHE_FOLDER = 'data/cache'
+ENABLED = False
 
 
 def get_collection(db_name=DB_NAME, collection_name=CACHE_COLLECTION_NAME):
@@ -16,6 +17,9 @@ def get_collection(db_name=DB_NAME, collection_name=CACHE_COLLECTION_NAME):
 
 
 def store_result(query, obj):
+    if not ENABLED:
+        return
+
     # get random file
     filename = str(uuid.uuid4())
 
@@ -33,6 +37,9 @@ def store_result(query, obj):
 
 
 def get_results(query):
+    if not ENABLED:
+        return False
+
     collection = get_collection()
     result = collection.find_one(query)
 
