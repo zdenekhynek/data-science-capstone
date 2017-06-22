@@ -7,7 +7,6 @@ CACHE_OPERATION_KEY = 'tf-idf'
 
 def fit_texts(texts, tokenizer, ngram_range=(1, 3), stop_words='english',
               cache_params={}):
-
     params = cache_params.copy()
     params['operation'] = CACHE_OPERATION_KEY
     params['ngram_range'] = ngram_range

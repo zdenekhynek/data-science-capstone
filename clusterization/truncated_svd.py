@@ -7,12 +7,8 @@ from caching import caching
 CACHE_OPERATION_KEY = 'truncated-svd'
 NUMBER_OF_COMPONENTS = 2
 
-svd = False
-
 
 def fit_transform(data, num_components=NUMBER_OF_COMPONENTS, cache_params={}):
-    global svd
-
     params = cache_params.copy()
     params['operation'] = CACHE_OPERATION_KEY
     params['num_components'] = num_components

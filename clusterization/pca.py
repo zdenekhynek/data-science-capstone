@@ -5,11 +5,8 @@ from caching import caching
 CACHE_OPERATION_KEY = 'pca'
 NUMBER_OF_COMPONENTS = 2
 
-pca = False
-
 
 def fit_transform(data, num_components=NUMBER_OF_COMPONENTS, cache_params={}):
-    global pca
 
     params = cache_params.copy()
     params['operation'] = CACHE_OPERATION_KEY
