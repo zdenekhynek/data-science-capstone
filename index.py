@@ -11,7 +11,8 @@ from tokenizer.stop_words import filter_stop_words
 from tokenizer.stem_words import stem_words
 from tokenizer.remove_punctuation import remove_punctuation
 from vectorization import tf_idf
-from clusterization import k_means, truncated_svd, lda
+from clusterization import k_means, mini_batch_k_means, truncated_svd
+from topics import lda
 from visualisation.text_visualisation import print_cluster_keywords_and_titles, TEXT_VISUALISATION_FILE_PATH
 from visualisation.pca_scatter import plot_scatter, PCA_SCATTER_FILE_PATH
 from visualisation.lda_topics import print_lda_topics, LDA_TOPIC_FILE_PATH
