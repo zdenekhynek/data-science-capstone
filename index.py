@@ -10,13 +10,14 @@ from tokenizer.remove_html import remove_html
 from tokenizer.tokenize_and_stem import tokenize_and_stem
 from tokenizer.get_tokens import get_texts_tokens
 from vectorization import tf_idf
+from vectorization.get_weighted_tokens import get_weighted_tokens
 from clusterization import k_means, mini_batch_k_means, truncated_svd
 from topics import lda
 from visualisation.text_visualisation import print_cluster_keywords_and_titles, TEXT_VISUALISATION_FILE_PATH
 from visualisation.pca_scatter import plot_scatter, PCA_SCATTER_FILE_PATH
 from visualisation.lda_topics import print_lda_topics, LDA_TOPIC_FILE_PATH
 from caching import caching
-from results.results import store_tokens
+from results.results import store_tokens, store_idf_tokens
 
 
 # CLI arguments
@@ -65,7 +66,7 @@ print('3. Remove HTML', time.process_time() - t)
 t = time.process_time()
 
 
-# store tokens
+# STORING 1 - store tokens
 store_tokens({}, get_texts_tokens(texts))
 
 
@@ -76,6 +77,11 @@ store_tokens({}, get_texts_tokens(texts))
 ngrams = (1, 1)
 vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem, ngrams,
                                       'english', cache_params)
+
+
+# STORING 2 - store tokens with tf-idf
+store_idf_tokens({}, get_weighted_tokens(vectorizer))
+
 
 # terms = vectorizer.get_feature_names()
 # important_tokens = most_important_tokens(vectorizer)

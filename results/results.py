@@ -30,39 +30,49 @@ def get_file_full_path(file_name, folder=RESULTS_FOLDER):
     return path.join(folder, file_name)
 
 
-def store_csv_data(file_path, data):
+# def store_csv_data(file_path, data):
     # convert data to panda dataframe
     # (expects either list-like or dictionary-like data types)
-    df = pd.DataFrame(data)
+#   df = pd.DataFrame(data)
 
     # store into csv
-    df.to_csv(file_path)
+#    df.to_csv(file_path)
 
 
-def store_result_record(params={}, file=''):
-    # construct object to be stored
-    result = {}
-    result['params'] = params
-    result['file'] = file
-
+def store_result_record(params={}, operation='', file=''):
     collection = get_collection()
-    collection.update(params, result, True)
+    record = collection.find_one(params)
+
+    if record is None:
+        record = {}
+        record['params'] = params
+
+    record['{0}-file'.format(operation)] = file
+    collection.save(record)
 
 
-def store_tokens(params={}, tokens=[]):
-    file_name = get_file_name('tokens', 'csv')
+def store_tokens(params={}, tokens_df=pd.DataFrame()):
+    operation = 'tokens'
+    file_name = get_file_name(operation, 'csv')
     full_path = get_file_full_path(file_name)
 
     # dump results into a file
-    store_csv_data(full_path, tokens)
+    tokens_df.to_csv(full_path)
 
     # store record about run into databse
-    store_result_record(params, full_path)
+    store_result_record(params, operation, full_path)
 
 
+def store_idf_tokens(params={}, tokens_df=pd.DataFrame()):
+    operation = 'tokens-idf'
+    file_name = get_file_name(operation, 'csv')
+    full_path = get_file_full_path(file_name)
 
-def store_idf_tokens():
-    collection = get_collection()
+    # dump results into a file
+    tokens_df.to_csv(full_path)
+
+    # store record about run into databse
+    store_result_record(params, operation, full_path)
 
 
 def store_cluster_tokes():

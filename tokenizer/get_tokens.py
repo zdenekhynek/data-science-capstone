@@ -1,3 +1,4 @@
+import pandas as pd
 from collections import Counter
 
 from tokenizer.tokenize_and_stem import tokenize_and_stem
@@ -10,7 +11,8 @@ def get_filtered_tokens(texts):
 
 
 def get_tokens_count(tokens):
-    return Counter(tokens).most_common()
+    data = Counter(tokens).most_common()
+    return pd.DataFrame(data)
 
 
 def get_texts_tokens(texts):
