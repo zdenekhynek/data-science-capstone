@@ -2,13 +2,13 @@ from pymongo import MongoClient
 from sklearn.externals import joblib
 import uuid
 
-DB_NAME = 'capstone'
-COLLECTION_NAME = 'cache'
+from database import DB_NAME, CACHE_COLLECTION_NAME
+
 
 CACHE_FOLDER = 'data/cache'
 
 
-def get_collection(db_name=DB_NAME, collection_name=COLLECTION_NAME):
+def get_collection(db_name=DB_NAME, collection_name=CACHE_COLLECTION_NAME):
     client = MongoClient()
     db = client[db_name]
     collection = db[collection_name]
@@ -20,15 +20,15 @@ def store_result(query, obj):
     filename = str(uuid.uuid4())
 
     # store result into file using joblib
-    full_fillname = CACHE_FOLDER + '/' + filename
-    joblib.dump(obj, full_fillname)
+    full_filename = CACHE_FOLDER + '/' + filename
+    joblib.dump(obj, full_filename)
 
     # update record in database
     collection = get_collection()
 
     # result
     result = query.copy()
-    result['cache_file_path'] = full_fillname
+    result['cache_file_path'] = full_filename
     collection.update(query, result, True)
 
 

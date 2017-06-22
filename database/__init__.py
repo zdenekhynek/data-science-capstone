@@ -1,2 +1,3 @@
 DB_NAME = 'capstone'
-COLLECTION_NAME = 'articles'
+ARTICLES_COLLECTION_NAME = 'articles'
+CACHE_COLLECTION_NAME = 'cache'
