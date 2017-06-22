@@ -11,7 +11,7 @@ def add_query_to_article(article, query=''):
     return article
 
 
-def fetch_articles(callback, api_key, query, page, from_date, to_date, collection=[]):
+def fetch_articles(api_key, query, page, from_date, to_date, collection=[]):
     response = fetch_guardian_articles.fetch(api_key, query, page, from_date, to_date)
 
     if (response and response['results']):
@@ -35,13 +35,13 @@ def fetch_articles(callback, api_key, query, page, from_date, to_date, collectio
         if (pages and page < pages):
             #   load next article
             time.sleep(IN_BETWEEN_REQUESTS_GAP)
-            fetch_articles(callback, api_key, query, page + 1, from_date, to_date, collection)
+            fetch_articles(api_key, query, page + 1, from_date, to_date, collection)
         else:
             # all done, return collected articles
-            callback(collection)
+            return collection
     else:
         print('Nothing found')
 
 
-def fetch(callback, api_key, query='', page=1, from_date=False, to_date=False):
+def fetch(api_key, query='', page=1, from_date=False, to_date=False):
     fetch_articles(callback, api_key, query, page, from_date, to_date)
