@@ -112,7 +112,7 @@ t = time.process_time()
 
 kmeans_cache_params = cache_params.copy()
 kmeans_cache_params['ngrams'] = ngrams
-cluster_model = k_means.fit_clusters(matrix, cli_clusters, kmeans_cache_params)
+cluster_model = mini_batch_k_means.fit_clusters(matrix, cli_clusters, kmeans_cache_params)
 clusters = cluster_model.labels_
 k_means.print_silhouette_score(matrix, clusters, cli_clusters)
 
