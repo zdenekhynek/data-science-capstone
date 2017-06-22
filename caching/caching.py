@@ -1,16 +1,16 @@
-from pymongo import MongoClient
-from sklearn.externals import joblib
 import uuid
 
-from database import DB_NAME, CACHE_COLLECTION_NAME
+from pymongo import MongoClient
+from sklearn.externals import joblib
 
+from database import DB_NAME, CACHE_COLLECTION_NAME
+from database.client import client
 
 CACHE_FOLDER = 'data/cache'
 ENABLED = False
 
 
 def get_collection(db_name=DB_NAME, collection_name=CACHE_COLLECTION_NAME):
-    client = MongoClient()
     db = client[db_name]
     collection = db[collection_name]
     return collection
