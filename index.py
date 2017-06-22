@@ -1,24 +1,21 @@
-import pandas as pd
 import argparse
 import time
+
+import pandas as pd
 from collections import Counter
 
 from articles import articles
-
 from tokenizer import tokenizer
 from tokenizer.remove_html import remove_html
 from tokenizer.stop_words import filter_stop_words
 from tokenizer.stem_words import stem_words
 from tokenizer.remove_punctuation import remove_punctuation
-
 from vectorization import tf_idf
-
 from clusterization import k_means, truncated_svd, lda
-
-from visualisation.text_visualisation import print_cluster_keywords_and_titles, TEXT_VISUALISATION_FILE_PATH
+from visualisation.text_visualisation import print_cluster_keywords_and_titles,
+                                             TEXT_VISUALISATION_FILE_PATH
 from visualisation.pca_scatter import plot_scatter, PCA_SCATTER_FILE_PATH
 from visualisation.lda_topics import print_lda_topics, LDA_TOPIC_FILE_PATH
-
 from caching import caching
 
 
@@ -148,14 +145,18 @@ caching.store_result(df_cache_params, df)
 # Plotting results
 ####################################################
 
-file_path = PCA_SCATTER_FILE_PATH.replace('.png', '__num_clusters__' + str(cli_clusters) + '_limit_' + str(cli_limit) + '.png')
+replace_string = '__num_clusters__{0}__limit__{1}.png'
+.format(str(cli_clusters), str(cli_limit))
+file_path = PCA_SCATTER_FILE_PATH.replace('.png', replace_string)
 
 plot_scatter(df, file_path)
 
 print('6b. Plotting PCA', time.process_time() - t)
 t = time.process_time()
 
-file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', '__num_clusters__' + str(cli_clusters) + '_limit_' + str(cli_limit) + '.txt')
+replace_string = '__num_clusters__{0}__limit__{1}.txt'
+.format(str(cli_clusters), str(cli_limit))
+file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', replace_string)
 
 print_cluster_keywords_and_titles(df, cluster_model, vectorizer, file_path)
 
@@ -170,7 +171,9 @@ t = time.process_time()
 # tokens = [filter_stop_words(text) for text in tokenized_texts]
 
 # fitted_lda = lda.fit_model(tokens)
-# file_path = LDA_TOPIC_FILE_PATH.replace('.txt', '_limit_' + str(cli_limit) + '.txt')
+# replace_string = '__num_clusters__{0}__limit__{1}.txt'
+# .format(str(cli_clusters), str(cli_limit))
+# file_path = LDA_TOPIC_FILE_PATH.replace('.txt', replace_string)
 # print_lda_topics(fitted_lda, file_path)
 
 # print('7. LDA', time.process_time() - t)
