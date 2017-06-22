@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 
-DB_NAME = 'capstone'
-COLLECTION_NAME = 'articles'
+from database import DB_NAME, COLLECTION_NAME
 
 
 def get_collection(db_name=DB_NAME, collection_name=COLLECTION_NAME):
