@@ -7,9 +7,8 @@ from collections import Counter
 from articles import articles
 from tokenizer import tokenizer
 from tokenizer.remove_html import remove_html
-from tokenizer.stop_words import filter_stop_words
-from tokenizer.stem_words import stem_words
-from tokenizer.remove_punctuation import remove_punctuation
+from tokenizer.tokenize_and_stem import tokenize_and_stem
+from tokenizer.get_tokens import get_texts_tokens
 from vectorization import tf_idf
 from clusterization import k_means, mini_batch_k_means, truncated_svd
 from topics import lda
@@ -17,6 +16,7 @@ from visualisation.text_visualisation import print_cluster_keywords_and_titles, 
 from visualisation.pca_scatter import plot_scatter, PCA_SCATTER_FILE_PATH
 from visualisation.lda_topics import print_lda_topics, LDA_TOPIC_FILE_PATH
 from caching import caching
+from results.results import store_tokens
 
 
 # CLI arguments
@@ -29,27 +29,6 @@ cli_clusters = int(cli_args.clusters)
 
 
 cache_params = {'limit': cli_limit}
-
-
-def tokenize_and_stem(text):
-    # tokenize
-    tokens = tokenizer.tokenize(text)
-
-    # remove punctuation
-    tokens = remove_punctuation(tokens)
-
-    # stem
-    tokens = stem_words(tokens)
-
-    # to lowercase
-    return tokens
-
-
-def most_common_tokens(texts):
-    tokens = [token for text in texts for token in tokenize_and_stem(text)]
-    filtered_tokens = filter_stop_words(tokens)
-    counter = Counter(filtered_tokens)
-    return counter.most_common(10)
 
 
 def most_important_tokens(vectorizer):
@@ -85,9 +64,9 @@ texts = [remove_html(text) for text in texts]
 print('3. Remove HTML', time.process_time() - t)
 t = time.process_time()
 
-# find out most common words
-# keywords = most_common_tokens(texts)
-# print('Keywords', keywords)
+
+# store tokens
+store_tokens({}, get_texts_tokens(texts))
 
 
 ####################################################
