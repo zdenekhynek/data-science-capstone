@@ -75,20 +75,36 @@ def store_idf_tokens(params={}, tokens_df=pd.DataFrame()):
     store_result_record(params, operation, full_path)
 
 
-def store_cluster_tokes():
-    collection = get_collection()
+def store_cluster_tokes(params={}, clusters_df=pd.DataFrame()):
+    operation = 'cluster-tokens'
+    # file_name = get_file_name(operation, 'csv')
+    # full_path = get_file_full_path(file_name)
+
+    # dump results into a file
+    # tokens_df.to_csv(full_path)
+
+    # store record about run into databse
+    # store_result_record(params, operation, full_path)
 
 
-def store_cluster_articles():
-    collection = get_collection()
+def store_cluster_articles(params={}, articles_df=pd.DataFrame()):
+    operation = 'article-clusters'
+    file_name = get_file_name(operation, 'csv')
+    full_path = get_file_full_path(file_name)
+
+    # select columns we're interested in
+    df = articles_df[['id', 'cluster', 'x', 'y']]
+
+    # dump results into a file
+    df.to_csv(full_path)
+
+    # store record about run into databse
+    store_result_record(params, operation, full_path)
 
 
 def store_clusterisation_results():
     collection = get_collection()
 
-
-def store_pca():
-    collection = get_collection()
 
 
 def store_lda():

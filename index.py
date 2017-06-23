@@ -17,7 +17,7 @@ from visualisation.text_visualisation import print_cluster_keywords_and_titles, 
 from visualisation.pca_scatter import plot_scatter, PCA_SCATTER_FILE_PATH
 from visualisation.lda_topics import print_lda_topics, LDA_TOPIC_FILE_PATH
 from caching import caching
-from results.results import store_tokens, store_idf_tokens
+from results.results import store_tokens, store_idf_tokens, store_cluster_articles
 
 
 # CLI arguments
@@ -30,14 +30,6 @@ cli_clusters = int(cli_args.clusters)
 
 
 cache_params = {'limit': cli_limit}
-
-
-def most_important_tokens(vectorizer):
-    tokens = dict(zip(vectorizer.get_feature_names(), vectorizer.idf_))
-    df = pd.DataFrame(columns=['tfidf']).from_dict(tokens, orient='index')
-    df.columns = ['tfidf']
-    df = df.sort_values(by=['tfidf'], ascending=False)
-    return df.head(30)
 
 
 t = time.process_time()
@@ -83,10 +75,6 @@ vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem, ngrams,
 store_idf_tokens({}, get_weighted_tokens(vectorizer))
 
 
-# terms = vectorizer.get_feature_names()
-# important_tokens = most_important_tokens(vectorizer)
-# print('Most important tokens', important_tokens)
-
 print('4. TF-IDF', time.process_time() - t)
 t = time.process_time()
 
@@ -100,6 +88,10 @@ kmeans_cache_params['ngrams'] = ngrams
 cluster_model = mini_batch_k_means.fit_clusters(matrix, cli_clusters, kmeans_cache_params)
 clusters = cluster_model.labels_
 k_means.print_silhouette_score(matrix, clusters, cli_clusters)
+
+# STORING 2 - store tokens with tf-idf
+store_idf_tokens({}, get_weighted_tokens(vectorizer))
+
 
 print('5. K-Means', time.process_time() - t)
 t = time.process_time()
@@ -118,6 +110,10 @@ df = pd.DataFrame(article_docs)
 df['cluster'] = clusters
 df['x'] = xs_ys[:, 0]
 df['y'] = xs_ys[:, 1]
+
+# STORING 4 - store clusters and PCA results
+store_cluster_articles({}, df)
+
 
 # cache data frame
 df_cache_params = cache_params.copy()
@@ -138,13 +134,13 @@ caching.store_result(df_cache_params, df)
 # print('6b. Plotting PCA', time.process_time() - t)
 # t = time.process_time()
 
-replace_string = '__num_clusters__{0}__limit__{1}.txt'.format(str(cli_clusters), str(cli_limit))
-file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', replace_string)
+# replace_string = '__num_clusters__{0}__limit__{1}.txt'.format(str(cli_clusters), str(cli_limit))
+# file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', replace_string)
 
-print_cluster_keywords_and_titles(df, cluster_model, vectorizer, file_path)
+# print_cluster_keywords_and_titles(df, cluster_model, vectorizer, file_path)
 
-print('5b. Visualisating keywords', time.process_time() - t)
-t = time.process_time()
+# print('5b. Visualisating keywords', time.process_time() - t)
+# t = time.process_time()
 
 # 7. LDA
 # tokenize
