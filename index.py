@@ -5,6 +5,7 @@ import pandas as pd
 from collections import Counter
 
 from articles import articles
+from performance.benchmarks import Benchmarks
 from tokenizer import tokenizer
 from tokenizer.remove_html import remove_html
 from tokenizer.tokenize_and_stem import tokenize_and_stem
@@ -17,7 +18,7 @@ from visualisation.text_visualisation import print_cluster_keywords_and_titles, 
 from visualisation.pca_scatter import plot_scatter, PCA_SCATTER_FILE_PATH
 from visualisation.lda_topics import print_lda_topics, LDA_TOPIC_FILE_PATH
 from caching import caching
-from results.results import store_tokens, store_idf_tokens, store_cluster_articles
+from results import results
 
 
 # CLI arguments
@@ -28,11 +29,9 @@ cli_args = parser.parse_args()
 cli_limit = int(cli_args.limit)
 cli_clusters = int(cli_args.clusters)
 
-
 cache_params = {'limit': cli_limit}
 
-
-t = time.process_time()
+benchmarks = Benchmarks()
 
 ####################################################
 # 1. get the documents a process them
@@ -40,26 +39,18 @@ t = time.process_time()
 
 documents = articles.get_articles().limit(cli_limit)
 article_docs = [document for document in documents]
-
-print('1. Getting articles', time.process_time() - t)
-t = time.process_time()
+benchmarks.add_benchmark('1-get-articles')
 
 # 2. get just body documents
 texts = articles.get_document_texts(article_docs)
-
-print('2. Get just body documents', time.process_time() - t)
-t = time.process_time()
-
+benchmarks.add_benchmark('2-get-body-documents')
 
 # 3. remove html
 texts = [remove_html(text) for text in texts]
-
-print('3. Remove HTML', time.process_time() - t)
-t = time.process_time()
-
+benchmarks.add_benchmark('3-remove-html')
 
 # STORING 1 - store tokens
-store_tokens({}, get_texts_tokens(texts))
+results.store_tokens({}, get_texts_tokens(texts))
 
 
 ####################################################
@@ -69,14 +60,10 @@ store_tokens({}, get_texts_tokens(texts))
 ngrams = (1, 1)
 vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem, ngrams,
                                       'english', cache_params)
-
+benchmarks.add_benchmark('4-tf-idf')
 
 # STORING 2 - store tokens with tf-idf
-store_idf_tokens({}, get_weighted_tokens(vectorizer))
-
-
-print('4. TF-IDF', time.process_time() - t)
-t = time.process_time()
+results.store_idf_tokens({}, get_weighted_tokens(vectorizer))
 
 
 ####################################################
@@ -87,14 +74,13 @@ kmeans_cache_params = cache_params.copy()
 kmeans_cache_params['ngrams'] = ngrams
 cluster_model = mini_batch_k_means.fit_clusters(matrix, cli_clusters, kmeans_cache_params)
 clusters = cluster_model.labels_
-k_means.print_silhouette_score(matrix, clusters, cli_clusters)
+benchmarks.add_benchmark('5-mini-batch-k-means')
 
-# STORING 2 - store tokens with tf-idf
-store_idf_tokens({}, get_weighted_tokens(vectorizer))
+# k_means.print_silhouette_score(matrix, clusters, cli_clusters)
+silhouette_score = mini_batch_k_means.get_silhouette_score(matrix, clusters)
 
-
-print('5. K-Means', time.process_time() - t)
-t = time.process_time()
+# STORING 3 - store results
+results.store_clusterisation_results({}, silhouette_score)
 
 
 ####################################################
@@ -102,9 +88,7 @@ t = time.process_time()
 ####################################################
 
 svd, xs_ys = truncated_svd.fit_transform(matrix, 2, cache_params)
-
-print('6. PCA', time.process_time() - t)
-t = time.process_time()
+benchmarks.add_benchmark('6-pca')
 
 df = pd.DataFrame(article_docs)
 df['cluster'] = clusters
@@ -112,14 +96,18 @@ df['x'] = xs_ys[:, 0]
 df['y'] = xs_ys[:, 1]
 
 # STORING 4 - store clusters and PCA results
-store_cluster_articles({}, df)
+results.store_cluster_articles({}, df)
+
+
+# STORING 5 - store benchmarks
+results.store_performance({}, benchmarks.get_benchmarks())
 
 
 # cache data frame
-df_cache_params = cache_params.copy()
-df_cache_params['operation'] = 'df'
-df_cache_params['num_clusters'] = cli_clusters
-caching.store_result(df_cache_params, df)
+# df_cache_params = cache_params.copy()
+# df_cache_params['operation'] = 'df'
+# df_cache_params['num_clusters'] = cli_clusters
+# caching.store_result(df_cache_params, df)
 
 
 ####################################################

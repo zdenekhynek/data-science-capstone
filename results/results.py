@@ -102,10 +102,37 @@ def store_cluster_articles(params={}, articles_df=pd.DataFrame()):
     store_result_record(params, operation, full_path)
 
 
-def store_clusterisation_results():
-    collection = get_collection()
+def store_clusterisation_results(params={}, silhouette_score=0):
+    operation = 'clusterisation-results'
+    file_name = get_file_name(operation, 'csv')
+    full_path = get_file_full_path(file_name)
 
+    # select columns we're interested in
+    results = {'silhouette_score': silhouette_score}
+    df = pd.DataFrame.from_dict(results, orient='index')
+
+    # dump results into a file
+    df.to_csv(full_path)
+
+    # store record about run into databse
+    store_result_record(params, operation, full_path)
+
+
+def store_performance(params={}, benchmarks=[]):
+    operation = 'benchmarks'
+    file_name = get_file_name(operation, 'csv')
+    full_path = get_file_full_path(file_name)
+
+    # conver list to pandas
+    df = pd.DataFrame(benchmarks)
+
+    # dump results into a file
+    df.to_csv(full_path)
+
+    # store record about run into databse
+    store_result_record(params, operation, full_path)
+    pass
 
 
 def store_lda():
-    collection = get_collection()
+    pass

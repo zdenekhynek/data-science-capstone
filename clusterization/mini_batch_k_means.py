@@ -31,6 +31,10 @@ def fit_clusters(vector_matrix, num_clusters=5, cache_params={}):
     return km
 
 
+def get_silhouette_score(matrix, clusters):
+    return silhouette_score(matrix, clusters)
+
+
 def print_silhouette_score(matrix, clusters, n_clusters):
     silhouette_avg = silhouette_score(matrix, clusters)
     print("For n_clusters =", n_clusters,
