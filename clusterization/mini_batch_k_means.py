@@ -8,25 +8,26 @@ from caching import caching
 CACHE_OPERATION_KEY = 'mini-batch-k-means'
 
 
-def fit_clusters(vector_matrix, num_clusters=5, cache_params={}):
-    params = cache_params.copy()
-    params['operation'] = CACHE_OPERATION_KEY
-    params['num_clusters'] = num_clusters
+def fit_clusters(vector_matrix, num_clusters=5, params={}):
+    # params = cache_params.copy()
+    # params['operation'] = CACHE_OPERATION_KEY
+    # params['num_clusters'] = num_clusters
 
     # do we have cached model?
-    cached_model = caching.get_results(params)
-    if cached_model:
-        print('K-Means using cached model')
-        return cached_model
+    # cached_model = caching.get_results(params)
+    # if cached_model:
+    #    print('K-Means using cached model')
+    #    return cached_model
 
-    print('K-Means computing model')
+    # print('K-Means computing model')
 
     # we don't have cache model, instatniate k means
-    km = MiniBatchKMeans(n_clusters=num_clusters)
+    km = MiniBatchKMeans(n_clusters=params['n_clusters'],
+                         max_iter=params['max_iter'])
     km.fit(vector_matrix)
 
     # cache model
-    caching.store_result(params, km)
+    # caching.store_result(params, km)
 
     return km
 

@@ -5,32 +5,34 @@ from caching import caching
 CACHE_OPERATION_KEY = 'tf-idf'
 
 
-def fit_texts(texts, tokenizer, ngram_range=(1, 3), stop_words='english',
-              cache_params={}):
-    params = cache_params.copy()
-    params['operation'] = CACHE_OPERATION_KEY
-    params['ngram_range'] = ngram_range
-    params['stop_words'] = stop_words
+def fit_texts(texts, tokenizer, params={}):
+    # params = cache_params.copy()
+    # params['operation'] = CACHE_OPERATION_KEY
+    # params['ngram_range'] = ngram_range
+    # params['stop_words'] = stop_words
 
     # do we have cached model?
-    cached_model = caching.get_results(params)
-    if cached_model:
-        print('TF-IDF using cached model')
-        return cached_model
+    # cached_model = caching.get_results(params)
+    # if cached_model:
+    #    print('TF-IDF using cached model')
+    #    return cached_model
 
-    print('TF-IDF computing model')
+    # print('TF-IDF computing model')
 
     vectorizer = TfidfVectorizer(
-        stop_words=stop_words,
+        stop_words='english',
         use_idf=True,
         tokenizer=tokenizer,
-        ngram_range=ngram_range
+        ngram_range=params['ngram_range'],
+        min_df=params['min_df'],
+        max_df=params['max_df'],
+        max_features=params['max_features']
     )
 
     matrix = vectorizer.fit_transform(texts)
 
     # cache result
     result = (vectorizer, matrix)
-    caching.store_result(params, result)
+    # caching.store_result(params, result)
 
     return result

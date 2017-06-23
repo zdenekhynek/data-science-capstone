@@ -33,15 +33,15 @@ def get_file_full_path(file_name, folder=RESULTS_FOLDER):
 # def store_csv_data(file_path, data):
     # convert data to panda dataframe
     # (expects either list-like or dictionary-like data types)
-#   df = pd.DataFrame(data)
+    # df = pd.DataFrame(data)
 
     # store into csv
-#    df.to_csv(file_path)
+    # df.to_csv(file_path)
 
 
 def store_result_record(params={}, operation='', file=''):
     collection = get_collection()
-    record = collection.find_one(params)
+    record = collection.find_one({'params': params})
 
     if record is None:
         record = {}

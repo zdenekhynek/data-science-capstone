@@ -29,7 +29,29 @@ cli_args = parser.parse_args()
 cli_limit = int(cli_args.limit)
 cli_clusters = int(cli_args.clusters)
 
-cache_params = {'limit': cli_limit}
+parameters = {
+    'documents': {
+        'query': {},
+        'limit': 10
+    },
+    'tf_idf': {
+        'ngram_range': (1, 2),
+        'min_df': 2,
+        'max_df': 1.0,
+        'max_features': None
+    },
+    'k_means': {
+        'n_clusters': 5,
+        'max_iter': 300
+    },
+    'truncated_svd': {
+        'n_components': 2,
+        'n_iter': 5
+    }
+}
+
+
+cache_params = {}
 
 benchmarks = Benchmarks()
 
@@ -50,7 +72,7 @@ texts = [remove_html(text) for text in texts]
 benchmarks.add_benchmark('3-remove-html')
 
 # STORING 1 - store tokens
-results.store_tokens({}, get_texts_tokens(texts))
+results.store_tokens(parameters, get_texts_tokens(texts))
 
 
 ####################################################
@@ -58,12 +80,12 @@ results.store_tokens({}, get_texts_tokens(texts))
 ####################################################
 
 ngrams = (1, 1)
-vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem, ngrams,
-                                      'english', cache_params)
+vectorizer, matrix = tf_idf.fit_texts(texts, tokenize_and_stem,
+                                      parameters['tf_idf'])
 benchmarks.add_benchmark('4-tf-idf')
 
 # STORING 2 - store tokens with tf-idf
-results.store_idf_tokens({}, get_weighted_tokens(vectorizer))
+results.store_idf_tokens(parameters, get_weighted_tokens(vectorizer))
 
 
 ####################################################
@@ -72,27 +94,27 @@ results.store_idf_tokens({}, get_weighted_tokens(vectorizer))
 
 kmeans_cache_params = cache_params.copy()
 kmeans_cache_params['ngrams'] = ngrams
-cluster_model = mini_batch_k_means.fit_clusters(matrix, cli_clusters, kmeans_cache_params)
-clusters = cluster_model.labels_
-
-# STORING 3 - store cluster tokens
-cluster_tokes = mini_batch_k_means.get_clusters_tokens(cluster_model, vectorizer)
-results.store_cluster_tokes({}, cluster_tokes)
-
+cluster_model = mini_batch_k_means.fit_clusters(matrix, cli_clusters,
+                                                parameters['k_means'])
 benchmarks.add_benchmark('5-mini-batch-k-means')
 
-# k_means.print_silhouette_score(matrix, clusters, cli_clusters)
+# STORING 3 - store cluster tokens
+cluster_tokes = mini_batch_k_means.get_clusters_tokens(cluster_model,
+                                                       vectorizer)
+results.store_cluster_tokes(parameters, cluster_tokes)
+
+clusters = cluster_model.labels_
 silhouette_score = mini_batch_k_means.get_silhouette_score(matrix, clusters)
 
 # STORING 4 - store results
-results.store_clusterisation_results({}, silhouette_score)
+results.store_clusterisation_results(parameters, silhouette_score)
 
 
 ####################################################
 # 6. PCA
 ####################################################
 
-svd, xs_ys = truncated_svd.fit_transform(matrix, 2, cache_params)
+svd, xs_ys = truncated_svd.fit_transform(matrix, parameters['truncated_svd'])
 benchmarks.add_benchmark('6-pca')
 
 df = pd.DataFrame(article_docs)
@@ -101,11 +123,11 @@ df['x'] = xs_ys[:, 0]
 df['y'] = xs_ys[:, 1]
 
 # STORING 5 - store clusters and PCA results
-results.store_cluster_articles({}, df)
+results.store_cluster_articles(parameters, df)
 
 
 # STORING 6 - store benchmarks
-results.store_performance({}, benchmarks.get_benchmarks())
+results.store_performance(parameters, benchmarks.get_benchmarks())
 
 
 # cache data frame
@@ -127,9 +149,9 @@ results.store_performance({}, benchmarks.get_benchmarks())
 # print('6b. Plotting PCA', time.process_time() - t)
 # t = time.process_time()
 
-replace_string = '__num_clusters__{0}__limit__{1}.txt'.format(str(cli_clusters), str(cli_limit))
-file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', replace_string)
-print_cluster_keywords_and_titles(df, cluster_model, vectorizer, file_path)
+# replace_string = '__num_clusters__{0}__limit__{1}.txt'.format(str(cli_clusters), str(cli_limit))
+# file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', replace_string)
+# print_cluster_keywords_and_titles(df, cluster_model, vectorizer, file_path)
 
 # print('5b. Visualisating keywords', time.process_time() - t)
 # t = time.process_time()
