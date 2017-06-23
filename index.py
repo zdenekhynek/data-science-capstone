@@ -74,12 +74,17 @@ kmeans_cache_params = cache_params.copy()
 kmeans_cache_params['ngrams'] = ngrams
 cluster_model = mini_batch_k_means.fit_clusters(matrix, cli_clusters, kmeans_cache_params)
 clusters = cluster_model.labels_
+
+# STORING 3 - store cluster tokens
+cluster_tokes = mini_batch_k_means.get_clusters_tokens(cluster_model, vectorizer)
+results.store_cluster_tokes({}, cluster_tokes)
+
 benchmarks.add_benchmark('5-mini-batch-k-means')
 
 # k_means.print_silhouette_score(matrix, clusters, cli_clusters)
 silhouette_score = mini_batch_k_means.get_silhouette_score(matrix, clusters)
 
-# STORING 3 - store results
+# STORING 4 - store results
 results.store_clusterisation_results({}, silhouette_score)
 
 
@@ -95,11 +100,11 @@ df['cluster'] = clusters
 df['x'] = xs_ys[:, 0]
 df['y'] = xs_ys[:, 1]
 
-# STORING 4 - store clusters and PCA results
+# STORING 5 - store clusters and PCA results
 results.store_cluster_articles({}, df)
 
 
-# STORING 5 - store benchmarks
+# STORING 6 - store benchmarks
 results.store_performance({}, benchmarks.get_benchmarks())
 
 
@@ -122,10 +127,9 @@ results.store_performance({}, benchmarks.get_benchmarks())
 # print('6b. Plotting PCA', time.process_time() - t)
 # t = time.process_time()
 
-# replace_string = '__num_clusters__{0}__limit__{1}.txt'.format(str(cli_clusters), str(cli_limit))
-# file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', replace_string)
-
-# print_cluster_keywords_and_titles(df, cluster_model, vectorizer, file_path)
+replace_string = '__num_clusters__{0}__limit__{1}.txt'.format(str(cli_clusters), str(cli_limit))
+file_path = TEXT_VISUALISATION_FILE_PATH.replace('.txt', replace_string)
+print_cluster_keywords_and_titles(df, cluster_model, vectorizer, file_path)
 
 # print('5b. Visualisating keywords', time.process_time() - t)
 # t = time.process_time()

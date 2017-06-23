@@ -39,3 +39,23 @@ def print_silhouette_score(matrix, clusters, n_clusters):
     silhouette_avg = silhouette_score(matrix, clusters)
     print("For n_clusters =", n_clusters,
           "The average silhouette_score is :", silhouette_avg)
+
+
+def get_clusters_tokens(cluster_model, vectorizer):
+    feature_names = vectorizer.get_feature_names()
+
+    ordered_indices = cluster_model.cluster_centers_.argsort()[::-1]
+    num_clusters = ordered_indices.shape[0]
+
+    clusters = []
+
+    for i in range(num_clusters):
+        cluster_order_indices = ordered_indices[i]
+
+        tokens = []
+        for index in cluster_order_indices:
+            tokens.append(feature_names[index])
+
+        clusters.append(tokens)
+
+    return clusters

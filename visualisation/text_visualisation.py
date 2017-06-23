@@ -27,7 +27,7 @@ def print_cluster_keywords_and_titles(articles, cluster_model, vectorizer,
         for index in top_10_indices:
             words.append(feature_names[index])
 
-    result += ''.join(words) + '\n\n'
+        result += ','.join(words) + '\n\n'
 
     # print out titles
     grouped_articles = articles.groupby(by='cluster')

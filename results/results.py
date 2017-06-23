@@ -75,16 +75,23 @@ def store_idf_tokens(params={}, tokens_df=pd.DataFrame()):
     store_result_record(params, operation, full_path)
 
 
-def store_cluster_tokes(params={}, clusters_df=pd.DataFrame()):
-    operation = 'cluster-tokens'
-    # file_name = get_file_name(operation, 'csv')
-    # full_path = get_file_full_path(file_name)
+def store_cluster_tokes(params={}, clusters_tokens=[]):
+    operation = 'clusters-tokens'
+    file_name = get_file_name(operation, 'csv')
+    full_path = get_file_full_path(file_name)
+
+    # select columns we're interested in
+    df = pd.DataFrame(clusters_tokens)
+
+    # we want cluster ids as columns and tokens in rows
+    # will have much less columns then rows
+    df = df.transpose()
 
     # dump results into a file
-    # tokens_df.to_csv(full_path)
+    df.to_csv(full_path)
 
     # store record about run into databse
-    # store_result_record(params, operation, full_path)
+    store_result_record(params, operation, full_path)
 
 
 def store_cluster_articles(params={}, articles_df=pd.DataFrame()):
@@ -131,7 +138,6 @@ def store_performance(params={}, benchmarks=[]):
 
     # store record about run into databse
     store_result_record(params, operation, full_path)
-    pass
 
 
 def store_lda():
