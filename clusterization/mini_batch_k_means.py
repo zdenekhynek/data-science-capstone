@@ -8,7 +8,7 @@ from caching import caching
 CACHE_OPERATION_KEY = 'mini-batch-k-means'
 
 
-def fit_clusters(vector_matrix, num_clusters=5, params={}):
+def fit_clusters(vector_matrix, params={}):
     # params = cache_params.copy()
     # params['operation'] = CACHE_OPERATION_KEY
     # params['num_clusters'] = num_clusters
