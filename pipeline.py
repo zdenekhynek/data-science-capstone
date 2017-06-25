@@ -15,7 +15,6 @@ from vectorization.get_weighted_tokens import get_weighted_tokens
 from clusterization import k_means, mini_batch_k_means, truncated_svd
 from topics import lda
 from visualisation.text_visualisation import print_cluster_keywords_and_titles, TEXT_VISUALISATION_FILE_PATH
-from visualisation.pca_scatter import plot_scatter, PCA_SCATTER_FILE_PATH
 from visualisation.lda_topics import print_lda_topics, LDA_TOPIC_FILE_PATH
 from results import results
 
