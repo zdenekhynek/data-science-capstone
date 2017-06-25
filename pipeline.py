@@ -40,9 +40,6 @@ def run_pipeline(parameters={}):
     texts = [remove_html(text) for text in texts]
     benchmarks.add_benchmark('3-remove-html')
 
-    # 1c. remove proper nouns
-    texts = remove_proper_nouns(texts)
-
     # STORING 1 - store tokens
     results.store_tokens(parameters, get_texts_tokens(texts))
 
