@@ -3,7 +3,7 @@ from pipeline import run_pipeline
 parameters = {
     'documents': {
         'query': {},
-        'limit': 10000
+        'limit': 10
     },
     'tf_idf': {
         'ngram_range': (1, 2),
@@ -22,3 +22,10 @@ parameters = {
 }
 
 run_pipeline(parameters)
+
+# cluster_range = range(6, 10)
+# print(cluster_range)
+
+# for n_clusters in range(6, 10):
+#    parameters['k_means']['n_clusters'] = n_clusters
+#    run_pipeline(parameters)
