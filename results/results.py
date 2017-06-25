@@ -1,3 +1,4 @@
+import json
 from os import path
 from datetime import datetime
 
@@ -38,14 +39,22 @@ def get_file_full_path(file_name, folder=RESULTS_FOLDER):
     # store into csv
     # df.to_csv(file_path)
 
+def serialize_params(params):
+    return json.dumps(params)
+
 
 def store_result_record(params={}, operation='', file=''):
     collection = get_collection()
-    record = collection.find_one({'params': params})
+
+    # params might have illigal characters for mongo queries
+    serialized_params = serialize_params(params)
+
+    record = collection.find_one({'params': serialized_params})
 
     if record is None:
         record = {}
-        record['params'] = params
+
+    record['params'] = serialized_params
 
     record['{0}-file'.format(operation)] = file
     collection.save(record)

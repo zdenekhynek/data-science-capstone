@@ -1,8 +1,10 @@
 from pipeline import run_pipeline
 
+news_only_query = {'$or': [{'sectionId': 'world'}, {'sectionId': 'uk-news'}]}
+
 parameters = {
     'documents': {
-        'query': {},
+        'query': news_only_query,
         'limit': 10
     },
     'tf_idf': {
