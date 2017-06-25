@@ -10,7 +10,6 @@ from tokenizer import tokenizer
 from tokenizer.remove_html import remove_html
 from tokenizer.tokenize_and_stem import tokenize_and_stem
 from tokenizer.get_tokens import get_texts_tokens
-from tokenizer.remove_proper_nouns import remove_proper_nouns
 from vectorization import tf_idf
 from vectorization.get_weighted_tokens import get_weighted_tokens
 from clusterization import k_means, mini_batch_k_means, truncated_svd

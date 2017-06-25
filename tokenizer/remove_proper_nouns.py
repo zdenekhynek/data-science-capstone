@@ -1,8 +1,15 @@
+import string
+
 import nltk
 
 # interested in singular and plural proper nouns
 # http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 PROPER_NOUNS_TAGS = ['NNP', 'NNPS']
+
+
+def remove_lowercase_noun(tokens):
+    tokens = [word for word in tokens if word.islower()]
+    return tokens
 
 
 def filter_proper_nouns(tag):
