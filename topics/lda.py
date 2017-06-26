@@ -13,7 +13,7 @@ def print_topic_words():
         print()
 
 
-def fit_model(texts):
+def fit_model(texts, params):
     global lda
 
     # create a Gensim dictionary from the texts
@@ -21,16 +21,16 @@ def fit_model(texts):
 
     # remove extremes (similar to the min/max df step used when creating
     # the tf-idf matrix)
-    dictionary.filter_extremes(no_below=1, no_above=0.8)
+    dictionary.filter_extremes(params['no_below'], params['no_above'])
 
     # convert the dictionary to a bag of words corpus for reference
     corpus = [dictionary.doc2bow(text) for text in texts]
 
     lda = models.LdaModel(corpus,
-                          num_topics=5,
+                          num_topics=params['num_topics'],
                           id2word=dictionary,
-                          update_every=5,
-                          chunksize=10000,
-                          passes=100)
+                          update_every=params['update_every'],
+                          chunksize=params['chunksize'],
+                          passes=params['passes'])
 
     return lda

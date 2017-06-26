@@ -1,5 +1,16 @@
 from pipeline import run_pipeline
 
+
+def run_single_pipeline(params):
+    run_pipeline(params)
+
+
+def run_cluster_range(range):
+    for n_clusters in range:
+        parameters['k_means']['n_clusters'] = n_clusters
+        run_pipeline(parameters)
+
+
 news_only_query = {'$or': [{'sectionId': 'world'}, {'sectionId': 'uk-news'}]}
 
 parameters = {

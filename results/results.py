@@ -149,5 +149,20 @@ def store_performance(params={}, benchmarks=[]):
     store_result_record(params, operation, full_path)
 
 
-def store_lda():
-    pass
+def store_lda(params, topics=[]):
+    print('store-lda')
+    operation = 'lda'
+    file_name = get_file_name(operation, 'csv')
+    full_path = get_file_full_path(file_name)
+
+    df = pd.DataFrame(topics)
+
+    # we want topic ids as columns and tokens in rows
+    # will have much less columns then rows
+    df = df.transpose()
+
+    # dump results into a file
+    df.to_csv(full_path)
+
+    # store record about run into databse
+    store_result_record(params, operation, full_path)
