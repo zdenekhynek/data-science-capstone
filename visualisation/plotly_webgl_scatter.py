@@ -16,9 +16,10 @@ def plot_scatter(x, y, title, name, color):
       marker=dict(
           color=color,
           line=dict(
-              width=1,
+              width=0.2,
               color=color
-          )
+          ),
+          colorscale='Viridis'
       ),
       text=title
     )
