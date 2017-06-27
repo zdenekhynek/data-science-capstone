@@ -149,9 +149,34 @@ def store_performance(params={}, benchmarks=[]):
     store_result_record(params, operation, full_path)
 
 
-def store_lda(params, topics=[]):
-    print('store-lda')
+def store_lda(params, lda):
     operation = 'lda'
+    file_name = get_file_name(operation, 'csv')
+    full_path = get_file_full_path(file_name)
+
+    lda.save(full_path)
+
+    # store record about run into databse
+    store_result_record(params, operation, full_path)
+
+
+def store_lda_tokens(params, tokens=[]):
+    operation = 'lda-tokens'
+    file_name = get_file_name(operation, 'csv')
+    full_path = get_file_full_path(file_name)
+
+    # conver list to pandas
+    df = pd.DataFrame(tokens)
+
+    # dump results into a file
+    df.to_csv(full_path)
+
+    # store record about run into databse
+    store_result_record(params, operation, full_path)
+
+
+def store_lda_topics(params, topics=[]):
+    operation = 'lda-topics'
     file_name = get_file_name(operation, 'csv')
     full_path = get_file_full_path(file_name)
 

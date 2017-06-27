@@ -27,13 +27,16 @@ def run_pipeline(parameters={}):
     # remove stop word
     tokens = [filter_stop_words(text) for text in tokenized_texts]
     benchmarks.add_benchmark('4-filter-stop-words')
+    results.store_lda_tokens(parameters, tokens)
 
+    # fit lda
     fitted_lda = lda.fit_model(tokens, parameters['lda'])
     benchmarks.add_benchmark('5-fitting-model')
+    results.store_lda(parameters, fitted_lda)
 
+    # show lda topics
     topics = fitted_lda.show_topics(formatted=True)
-
-    results.store_lda(parameters, topics)
+    results.store_lda_topics(parameters, topics)
     benchmarks.add_benchmark('6-storing-results')
 
     results.store_performance(parameters, benchmarks.get_benchmarks())
@@ -65,7 +68,6 @@ def run_lda_year(year_tuple):
         'webPublicationDate': {'$gte': year_tuple[0], '$lt': year_tuple[1]}
     }
     parameters['documents']['query'] = {'$and': [news_only_query, date_query]}
-    print(parameters['documents']['query'])
     run_pipeline(parameters)
 
 
