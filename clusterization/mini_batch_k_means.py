@@ -45,7 +45,10 @@ def print_silhouette_score(matrix, clusters, n_clusters):
 def get_clusters_tokens(cluster_model, vectorizer):
     feature_names = vectorizer.get_feature_names()
 
+    print('feature_names', feature_names)
+
     ordered_indices = cluster_model.cluster_centers_.argsort()[::-1]
+    print('ordered_indices', ordered_indices)
     num_clusters = ordered_indices.shape[0]
 
     clusters = []

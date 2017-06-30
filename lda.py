@@ -48,7 +48,7 @@ news_only_query = {'$or': [{'sectionId': 'world'}, {'sectionId': 'uk-news'}]}
 parameters = {
     'documents': {
         'query': news_only_query,
-        'limit': 2
+        'limit': 100000
     },
     'lda': {
         'num_topics': 20,
@@ -95,6 +95,11 @@ years = [
     ('2013', '2014'),
     ('2014', '2015'),
     ('2015', '2016'),
+    ('2016', '2017'),
+    ('2017', '2018')
+]
+
+years = [
     ('2016', '2017'),
     ('2017', '2018')
 ]

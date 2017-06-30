@@ -16,7 +16,7 @@ news_only_query = {'$or': [{'sectionId': 'world'}, {'sectionId': 'uk-news'}]}
 parameters = {
     'documents': {
         'query': news_only_query,
-        'limit': 1000
+        'limit': 5
     },
     'tf_idf': {
         'ngram_range': (1, 2),
@@ -25,7 +25,7 @@ parameters = {
         'max_features': None
     },
     'k_means': {
-        'n_clusters': 5,
+        'n_clusters': 3,
         'max_iter': 300
     },
     'truncated_svd': {

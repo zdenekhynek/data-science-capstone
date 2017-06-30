@@ -17,3 +17,7 @@ def get_articles(query={}):
 
 def get_document_texts(documents):
     return [document['fields']['body'] for document in documents]
+
+
+def get_document_titles(documents):
+    return [document['webTitle'] for document in documents]
