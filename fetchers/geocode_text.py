@@ -7,4 +7,4 @@ def geocode_text(text):
 
 
 if __name__ == '__main__':
-    print geocode_text('Mountain View, CA')
+    print(geocode_text('Mountain View, CA'))

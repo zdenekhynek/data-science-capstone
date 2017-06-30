@@ -1,9 +1,5 @@
-import os
 from sklearn.cluster import MiniBatchKMeans
-from sklearn.externals import joblib
 from sklearn.metrics import silhouette_score
-
-from caching import caching
 
 CACHE_OPERATION_KEY = 'mini-batch-k-means'
 

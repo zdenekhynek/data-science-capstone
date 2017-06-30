@@ -1,6 +1,5 @@
 import uuid
 
-from pymongo import MongoClient
 from sklearn.externals import joblib
 
 from database import DB_NAME, CACHE_COLLECTION_NAME

@@ -1,4 +1,4 @@
-from gensim import corpora, models, similarities
+from gensim import corpora, models
 
 
 def create_dictionary(texts):

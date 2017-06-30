@@ -1,5 +1,3 @@
-import string
-
 import nltk
 
 # interested in singular and plural proper nouns

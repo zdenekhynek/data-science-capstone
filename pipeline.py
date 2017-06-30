@@ -1,21 +1,14 @@
-import argparse
-import time
 
 import pandas as pd
-from collections import Counter
 
 from articles import articles
 from performance.benchmarks import Benchmarks
-from tokenizer import tokenizer
 from tokenizer.remove_html import remove_html
 from tokenizer.tokenize_and_stem import tokenize_and_stem
 from tokenizer.get_tokens import get_texts_tokens
 from vectorization import tf_idf
 from vectorization.get_weighted_tokens import get_weighted_tokens
-from clusterization import k_means, mini_batch_k_means, truncated_svd
-from topics import lda
-from visualisation.text_visualisation import print_cluster_keywords_and_titles, TEXT_VISUALISATION_FILE_PATH
-from visualisation.lda_topics import print_lda_topics, LDA_TOPIC_FILE_PATH
+from clusterization import mini_batch_k_means, truncated_svd
 from results import results
 
 
@@ -27,7 +20,8 @@ def run_pipeline(parameters={}):
     ####################################################
 
     doc_params = parameters['documents']
-    documents = articles.get_articles(doc_params['query']).limit(doc_params['limit'])
+    documents = articles.get_articles(doc_params['query']).limit(
+        doc_params['limit'])
     article_docs = [document for document in documents]
     benchmarks.add_benchmark('1-get-articles')
 
@@ -57,7 +51,8 @@ def run_pipeline(parameters={}):
     # 5. k-means
     ####################################################
 
-    cluster_model = mini_batch_k_means.fit_clusters(matrix, parameters['k_means'])
+    cluster_model = mini_batch_k_means.fit_clusters(
+        matrix, parameters['k_means'])
     benchmarks.add_benchmark('5-mini-batch-k-means')
 
     # STORING 3 - store cluster tokens
@@ -66,7 +61,8 @@ def run_pipeline(parameters={}):
     results.store_cluster_tokes(parameters, cluster_tokes)
 
     clusters = cluster_model.labels_
-    silhouette_score = mini_batch_k_means.get_silhouette_score(matrix, clusters)
+    silhouette_score = mini_batch_k_means.get_silhouette_score(matrix,
+                                                               clusters)
 
     # STORING 4 - store results
     results.store_clusterisation_results(parameters, silhouette_score)
@@ -75,7 +71,8 @@ def run_pipeline(parameters={}):
     # 6. PCA
     ####################################################
 
-    svd, xs_ys = truncated_svd.fit_transform(matrix, parameters['truncated_svd'])
+    svd, xs_ys = truncated_svd.fit_transform(matrix,
+                                             parameters['truncated_svd'])
     benchmarks.add_benchmark('6-pca')
 
     df = pd.DataFrame(article_docs)

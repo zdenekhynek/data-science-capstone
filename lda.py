@@ -11,7 +11,8 @@ def run_pipeline(parameters={}):
     benchmarks = Benchmarks()
 
     doc_params = parameters['documents']
-    documents = articles.get_articles(doc_params['query']).limit(doc_params['limit'])
+    documents = articles.get_articles(doc_params['query']).limit(
+        doc_params['limit'])
     article_docs = [document for document in documents]
     texts = articles.get_document_texts(article_docs)
     benchmarks.add_benchmark('1-get-articles')

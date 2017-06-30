@@ -1,6 +1,4 @@
-import os
 from sklearn.cluster import KMeans
-from sklearn.externals import joblib
 from sklearn.metrics import silhouette_score
 
 from caching import caching

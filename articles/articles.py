@@ -1,5 +1,3 @@
-from pymongo import MongoClient
-
 from database import DB_NAME, ARTICLES_COLLECTION_NAME
 from database.client import client
 

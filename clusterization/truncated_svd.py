@@ -2,8 +2,6 @@
 # e.g. from vectorization
 from sklearn.decomposition import TruncatedSVD
 
-from caching import caching
-
 CACHE_OPERATION_KEY = 'truncated-svd'
 NUMBER_OF_COMPONENTS = 2
 

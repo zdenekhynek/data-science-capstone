@@ -4,7 +4,7 @@ from PIL import Image
 import matplotlib as mpl
 mpl.use('TkAgg')
 
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt  # noqa
 
 
 PCA_SCATTER_FILE_PATH = 'data/svg_scatter.png'

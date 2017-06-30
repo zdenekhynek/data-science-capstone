@@ -7,8 +7,8 @@ def store_results(string, file_path):
         f.close()
 
 
-def print_cluster_keywords_and_titles(articles, cluster_model, vectorizer,
-                                      result_file=TEXT_VISUALISATION_FILE_PATH):
+def print_cluster_keywords_titles(articles, cluster_model, vectorizer,
+                                  result_file=TEXT_VISUALISATION_FILE_PATH):
     result = ''
 
     feature_names = vectorizer.get_feature_names()

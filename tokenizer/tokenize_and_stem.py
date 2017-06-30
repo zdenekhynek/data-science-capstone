@@ -1,5 +1,4 @@
 from tokenizer import tokenizer
-from tokenizer.remove_html import remove_html
 from tokenizer.stem_words import stem_words
 from tokenizer.remove_punctuation import remove_punctuation
 from tokenizer.remove_proper_nouns import remove_lowercase_noun

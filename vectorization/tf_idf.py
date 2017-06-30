@@ -1,7 +1,5 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from caching import caching
-
 CACHE_OPERATION_KEY = 'tf-idf'
 
 

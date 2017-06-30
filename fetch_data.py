@@ -3,6 +3,7 @@ import argparse
 
 from articles import articles
 from fetchers import fetch_articles
+from database import DB_NAME, ARTICLES_COLLECTION_NAME
 
 
 def insert_document_to_mongo(collection, document):
@@ -31,8 +32,8 @@ if __name__ == '__main__':
     q = 'terrorist'
 
     # fetch data
-    articles = fetch_articles.fetch(api_key, q, 1)
+    documents = fetch_articles.fetch(api_key, q, 1)
 
     # store results
-    collection = articles.get_collection(DB_NAME, COLLECTION_NAME)
-    insert_documents_to_mongo(collection, articles)
+    collection = articles.get_collection(DB_NAME, ARTICLES_COLLECTION_NAME)
+    insert_documents_to_mongo(collection, documents)
