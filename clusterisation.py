@@ -12,11 +12,14 @@ def run_cluster_range(range):
 
 
 news_only_query = {'$or': [{'sectionId': 'world'}, {'sectionId': 'uk-news'}]}
+date_query = {
+    'webPublicationDate': {'$gte': '2016', '$lt': '2017'}
+}
 
 parameters = {
     'documents': {
-        'query': news_only_query,
-        'limit': 5
+        'query': {'$and': [news_only_query]},
+        'limit': 100000
     },
     'tf_idf': {
         'ngram_range': (1, 2),
@@ -25,11 +28,11 @@ parameters = {
         'max_features': None
     },
     'k_means': {
-        'n_clusters': 3,
+        'n_clusters': 10,
         'max_iter': 300
     },
     'truncated_svd': {
-        'n_components': 2,
+        'n_components': 3,
         'n_iter': 5
     }
 }

@@ -79,6 +79,7 @@ def run_pipeline(parameters={}):
     df['cluster'] = clusters
     df['x'] = xs_ys[:, 0]
     df['y'] = xs_ys[:, 1]
+    df['z'] = xs_ys[:, 2]
 
     # STORING 5 - store clusters and PCA results
     results.store_cluster_articles(parameters, df)

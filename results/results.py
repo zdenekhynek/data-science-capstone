@@ -109,7 +109,7 @@ def store_cluster_articles(params={}, articles_df=pd.DataFrame()):
     full_path = get_file_full_path(file_name)
 
     # select columns we're interested in
-    df = articles_df[['id', 'cluster', 'x', 'y']]
+    df = articles_df[['id', 'webTitle', 'cluster', 'x', 'y', 'z']]
 
     # dump results into a file
     df.to_csv(full_path)
