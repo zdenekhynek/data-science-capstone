@@ -7,7 +7,7 @@ from caching import caching
 CACHE_OPERATION_KEY = 'mini-batch-k-means'
 
 
-def fit_clusters(vector_matrix, params={}):
+def fit_clusters(vector_matrix, cache_params={}):
     """
     Calculates given number of clusters using mini-batch-k-means.
     Comparing to k-means, should be faster for datasets with more then 10000
@@ -19,7 +19,6 @@ def fit_clusters(vector_matrix, params={}):
     # already and might be able to use cached results instead (saves time)
     params = cache_params.copy()
     params['operation'] = CACHE_OPERATION_KEY
-    params['num_clusters'] = num_clusters
 
     # do we have cached model?
     cached_model = caching.get_results(params)

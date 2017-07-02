@@ -9,7 +9,7 @@ CACHE_OPERATION_KEY = 'truncated-svd'
 NUMBER_OF_COMPONENTS = 2
 
 
-def fit_transform(data, params={}):
+def fit_transform(data, cache_params={}):
     """
     Reduces data dimensions to a given number of components using Truncated SVD
     Unlike PCA, can be used for sparse input, e.g. from vectorization
@@ -20,7 +20,6 @@ def fit_transform(data, params={}):
     # already and might be able to use cached results instead (saves time)
     params = cache_params.copy()
     params['operation'] = CACHE_OPERATION_KEY
-    params['num_components'] = num_components
 
     # do we have cached model?
     cached_model = caching.get_results(params)

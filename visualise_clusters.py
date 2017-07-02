@@ -144,14 +144,17 @@ results = [
         'cluster_names': []
     },
     {
-        'results-file': '2017-06-26-00-36-48-983930-clusterisation-results',
-        'clusters-file': '2017-06-26-00-36-56-588418-article-clusters',
+        'results-file': '2017-07-02-14-25-54-140295-clusterisation-results',
+        'clusters-file': '2017-07-02-14-25-56-176479-article-clusters',
         'num_clusters': 10,
         'cluster_names': [
-            '2000s', 'Israel/Palestine', '2000s', 'Isis',
-            'Muslim Brotherhood (1)', 'War On Terror/Iraq',
-            'Bataclan Theatre (1)', 'Middle East', 'Abu Hamza (3)',
-            'Northern Ireland'
+            'Northern Ireland (2)', 'Northern Ireland/IRA (3,337)',
+            'Israel/Palestine (1,301)', 'Global Terrorism (9,309)',
+            'War On Terror/Al-Qaeda (1,095)',
+            'Europe/ISIS inspired attacks (713)',
+            'Syria/Middle East/ISIS (2,346)',
+            'Afghanistan (1)', 'US attacks/US politics (484)',
+            'Europe attacks (2738)'
         ],
     },
     {
@@ -222,7 +225,7 @@ results = [
     }
 ]
 
-# results = [results[8]]
+results = [results[8]]
 
 
 data = [
