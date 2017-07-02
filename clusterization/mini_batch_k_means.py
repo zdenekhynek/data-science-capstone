@@ -1,6 +1,8 @@
 from sklearn.cluster import MiniBatchKMeans
 from sklearn.metrics import silhouette_score
 
+from caching import caching
+
 # key under which the operation result will be stored in the cache collection
 CACHE_OPERATION_KEY = 'mini-batch-k-means'
 

@@ -1,5 +1,7 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from caching import caching
+
 # key under which the operation result will be stored in the cache collection
 CACHE_OPERATION_KEY = 'tf-idf'
 
@@ -14,8 +16,7 @@ def fit_texts(texts, tokenizer, cache_params={}):
     # already and might be able to use cached results instead (saves time)
     params = cache_params.copy()
     params['operation'] = CACHE_OPERATION_KEY
-    params['ngram_range'] = ngram_range
-    params['stop_words'] = stop_words
+    params['ngram_range'] = cache_params['ngram_range']
 
     # do we have cached model?
     cached_model = caching.get_results(params)

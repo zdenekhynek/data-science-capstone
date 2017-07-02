@@ -11,7 +11,8 @@ def run_cluster_range(range):
         run_pipeline(parameters)
 
 
-news_only_query = {'$or': [{'sectionId': 'world'}, {'sectionId': 'uk-news'}]}
+news_only_query = {'$or': [{'sectionId': 'world'}, {'sectionId': 'uk-news'},
+                           {'sectionId': 'us-news'}, ]}
 date_query = {
     'webPublicationDate': {'$gte': '2016', '$lt': '2017'}
 }
