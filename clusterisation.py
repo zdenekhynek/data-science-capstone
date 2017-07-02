@@ -1,4 +1,4 @@
-from pipeline import run_pipeline
+from clusterisation_pipeline import run_pipeline
 
 
 def run_single_pipeline(params):
@@ -22,7 +22,7 @@ parameters = {
         'limit': 100000
     },
     'tf_idf': {
-        'ngram_range': (1, 2),
+        'ngram_range': (1, 1),
         'min_df': 2,
         'max_df': 1.0,
         'max_features': None

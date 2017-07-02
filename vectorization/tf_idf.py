@@ -4,7 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 CACHE_OPERATION_KEY = 'tf-idf'
 
 
-def fit_texts(texts, tokenizer, params={}):
+def fit_texts(texts, tokenizer, cache_params={}):
     """
     Create tf-idf matrix from the list of texts
     http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html
